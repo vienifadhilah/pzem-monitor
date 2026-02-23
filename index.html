@@ -120,7 +120,6 @@
     .bar:nth-child(4){ height:12px; }
 
     .grid{ display:grid; gap:12px; }
-
     .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
 
     .card{
@@ -233,7 +232,6 @@
       .wrap{ max-width: 1400px; }
       .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
       .charts{ grid-template-columns: 1fr 1fr; }
-      .card.chart{ min-height: 420px; }
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
     }
@@ -244,6 +242,14 @@
     }
 
     .small-muted{ color: var(--muted); font-size: 12px; }
+
+    /* FIX: tinggi chart stabil (hilangkan blank/flicker) */
+    .card.chart { height: 420px; }
+    .card.chart canvas { width: 100% !important; height: 340px !important; }
+    @media (max-width: 860px){
+      .card.chart { height: 320px; }
+      .card.chart canvas { height: 240px !important; }
+    }
   </style>
 </head>
 
@@ -368,16 +374,15 @@
   const MAX_POINTS_LIVE = 120; // ~10 menit @5s
   let rangeMode = "live"; // "live" or "1h"
 
-  const buf = { t: [], V: [], W: [] };
+  // FIX: store as {x: timestamp, y: value}
+  const buf = { V: [], W: [] };
 
   function trimBuffer(maxPoints){
-    while (buf.t.length > maxPoints){
-      buf.t.shift(); buf.V.shift(); buf.W.shift();
-    }
+    while (buf.V.length > maxPoints) buf.V.shift();
+    while (buf.W.length > maxPoints) buf.W.shift();
   }
 
   function setLastUpdateNow(){
-    // stabil timezone lokal + 24 jam
     const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
     document.getElementById("lastUpdate").innerText = time;
   }
@@ -461,71 +466,79 @@
     return null;
   }
 
-  // ===== Chart.js Setup =====
+  // ===== Chart.js Setup (FIX: x = timestamp numeric) =====
   const ctxV = document.getElementById("chartV").getContext("2d");
   const ctxW = document.getElementById("chartW").getContext("2d");
 
   const chartV = new Chart(ctxV, {
     type: "line",
-    data: { labels: [], datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
+    data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       animation: false,
+      parsing: false,
       plugins: { legend: { display:false } },
-      scales: { x: { ticks: { maxTicksLimit: 6 } }, y: { ticks: { maxTicksLimit: 6 } } }
+      scales: {
+        x: {
+          type: "linear",
+          ticks: {
+            maxTicksLimit: 6,
+            callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
+          }
+        },
+        y: { ticks: { maxTicksLimit: 6 } }
+      }
     }
   });
 
   const chartW = new Chart(ctxW, {
     type: "line",
-    data: { labels: [], datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
+    data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       animation: false,
+      parsing: false,
       plugins: { legend: { display:false } },
-      scales: { x: { ticks: { maxTicksLimit: 6 } }, y: { ticks: { maxTicksLimit: 6 } } }
+      scales: {
+        x: {
+          type: "linear",
+          ticks: {
+            maxTicksLimit: 6,
+            callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
+          }
+        },
+        y: { ticks: { maxTicksLimit: 6 } }
+      }
     }
   });
-
-  // FIX: tinggi chart stabil (hindari blank flash)
-  function setChartHeights(){
-    const charts = document.querySelectorAll(".card.chart");
-    charts.forEach(c => {
-      const vh = window.innerHeight;
-      c.style.minHeight = (vh < 700) ? "280px" : "420px";
-    });
-  }
-  window.addEventListener("resize", setChartHeights);
-  setChartHeights();
 
   // Throttle redraw biar tidak terasa "refresh"
   let lastRedraw = 0;
   function redrawCharts(){
-    if (buf.t.length < 2) return;
-
     const now = Date.now();
-    if (now - lastRedraw < 450) return; // throttle ~0.45s
+    if (now - lastRedraw < 450) return;
     lastRedraw = now;
 
     const maxPoints = (rangeMode === "1h") ? MAX_POINTS_1H : MAX_POINTS_LIVE;
-    const start = Math.max(0, buf.t.length - maxPoints);
 
-    const labels = buf.t.slice(start).map(t =>
-      new Date(t).toLocaleTimeString("id-ID", { hour12:false })
-    );
+    const vStart = Math.max(0, buf.V.length - maxPoints);
+    const wStart = Math.max(0, buf.W.length - maxPoints);
 
-    chartV.data.labels = labels;
-    chartV.data.datasets[0].data = buf.V.slice(start);
-    chartV.update('none');
+    const vData = buf.V.slice(vStart);
+    const wData = buf.W.slice(wStart);
 
-    chartW.data.labels = labels;
-    chartW.data.datasets[0].data = buf.W.slice(start);
-    chartW.update('none');
+    if (vData.length < 2 && wData.length < 2) return;
 
-    document.getElementById("chartHintV").innerText = `${labels.length} points`;
-    document.getElementById("chartHintW").innerText = `${labels.length} points`;
+    chartV.data.datasets[0].data = vData;
+    chartV.update("none");
+
+    chartW.data.datasets[0].data = wData;
+    chartW.update("none");
+
+    document.getElementById("chartHintV").innerText = `${vData.length} points`;
+    document.getElementById("chartHintW").innerText = `${wData.length} points`;
   }
 
   // ===== Buttons =====
@@ -584,6 +597,8 @@
   const client = mqtt.connect(WS_URL);
 
   client.on("connect", () => {
+    // dashboard sudah connect ke broker (bukan status device)
+    setDeviceState("ONLINE");
     client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
   });
 
@@ -620,9 +635,8 @@
         setVoltageAlarm(d.V);
 
         const t = Date.now();
-        buf.t.push(t);
-        buf.V.push(d.V);
-        buf.W.push(d.W);
+        buf.V.push({ x: t, y: d.V });
+        buf.W.push({ x: t, y: d.W });
 
         trimBuffer(MAX_POINTS_1H);
         redrawCharts();
