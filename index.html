@@ -1,72 +1,704 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PZEM MONITOR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMART ENERGY MONITOR</title>
 
-<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<style>
-body{
-  font-family:Arial;
-  background:#111;
-  color:#fff;
-  text-align:center;
-}
-.card{
-  background:#1e1e1e;
-  margin:10px;
-  padding:15px;
-  border-radius:12px;
-  font-size:22px;
-}
-</style>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#121a24;
+      --card:#0f1720;
+      --stroke:#1d2a3a;
+      --text:#e7eef7;
+      --muted:#9fb0c3;
+
+      --ok:#24d18a;
+      --warn:#f7c948;
+      --bad:#ff4d4d;
+      --accent:#4da3ff;
+
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% -20%, rgba(77,163,255,.20), transparent 55%),
+                  radial-gradient(1000px 600px at 110% 10%, rgba(36,209,138,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 6px 2px 14px 2px;
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .title h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.3px;
+      font-weight: 750;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius:999px;
+      box-shadow: var(--shadow);
+      white-space:nowrap;
+    }
+
+    .led{
+      width:10px;height:10px;border-radius:50%;
+      background: #556;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
+    }
+    .led.ok{ background: var(--ok); box-shadow: 0 0 12px rgba(36,209,138,.45); }
+    .led.warn{ background: var(--warn); box-shadow: 0 0 12px rgba(247,201,72,.35); }
+    .led.bad{ background: var(--bad); box-shadow: 0 0 12px rgba(255,77,77,.35); }
+
+    .rssi{
+      display:inline-flex;
+      gap:3px;
+      align-items:flex-end;
+      height:12px;
+    }
+    .bar{
+      width:4px;
+      background: rgba(159,176,195,.35);
+      border-radius:2px;
+    }
+    .bar.on{ background: var(--ok); }
+    .bar.warn{ background: var(--warn); }
+    .bar.bad{ background: var(--bad); }
+    .bar:nth-child(1){ height:4px; }
+    .bar:nth-child(2){ height:7px; }
+    .bar:nth-child(3){ height:10px; }
+    .bar:nth-child(4){ height:12px; }
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    /* Top KPI grid */
+    .kpi-grid{
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:-40px -80px auto auto;
+      width:180px;height:180px;
+      background: radial-gradient(circle, rgba(77,163,255,.18), transparent 60%);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+
+    .kpi-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .kpi-label{
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing:.25px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      text-transform: uppercase;
+    }
+    .kpi-icon{
+      opacity:.85;
+      font-size: 14px;
+    }
+
+    .kpi-value{
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing:.3px;
+      line-height:1.05;
+    }
+    .kpi-unit{
+      color: var(--muted);
+      font-size: 12px;
+      margin-left: 6px;
+      font-weight: 650;
+    }
+
+    .kpi-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .alarm{
+      border-color: rgba(255,77,77,.7) !important;
+      box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important;
+    }
+    .alarm .kpi-value{ color: var(--bad); }
+
+    /* Charts */
+    .charts{
+      grid-template-columns: 1fr;
+    }
+
+    .chart-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .chart-title{
+      font-size: 13px;
+      letter-spacing:.25px;
+      color: var(--muted);
+      text-transform: uppercase;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .seg{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .seg button{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-weight: 650;
+      font-size: 12px;
+    }
+    .seg button.active{
+      border-color: rgba(77,163,255,.55);
+      box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset;
+    }
+
+    /* Layout for wider screens */
+    @media (min-width: 860px){
+      .kpi-grid{
+        grid-template-columns: repeat(6, 1fr);
+      }
+      .kpi-value{ font-size: 30px; }
+
+      .charts{
+        grid-template-columns: 1fr 1fr;
+      }
+      .card.tall{
+        grid-column: span 3;
+      }
+      .card.chart{
+        min-height: 320px;
+      }
+    }
+
+    /* extra small */
+    @media (max-width: 360px){
+      .kpi-value{ font-size: 24px; }
+      .title h1{ font-size: 16px; }
+    }
+
+    .small-muted{ color: var(--muted); font-size: 12px; }
+    a{ color: var(--accent); text-decoration:none; }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-<h2>⚡ MONITOR LISTRIK REALTIME</h2>
+    <header>
+      <div class="title">
+        <h1>⚡ SMART ENERGY MONITOR</h1>
+        <div class="subtitle">
+          <span class="pill">
+            <span id="ledDevice" class="led"></span>
+            <span id="deviceText">DEVICE: CONNECTING</span>
+          </span>
 
-<div class="card">Voltage : <span id="V">--</span> V</div>
-<div class="card">Current : <span id="A">--</span> A</div>
-<div class="card">Power   : <span id="W">--</span> W</div>
-<div class="card">Energy  : <span id="kWh">--</span> kWh</div>
-<div class="card">Freq    : <span id="Hz">--</span> Hz</div>
-<div class="card">PF      : <span id="PF">--</span></div>
+          <span class="pill">
+            <span id="ledPzem" class="led"></span>
+            <span id="pzemText">PZEM: UNKNOWN</span>
+          </span>
+
+          <span class="pill">
+            <span class="small-muted">RSSI</span>
+            <span id="rssiBars" class="rssi" aria-label="RSSI">
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </span>
+            <span id="rssiText" class="small-muted">--</span>
+          </span>
+
+          <span class="pill">
+            <span class="small-muted">Last update</span>
+            <span id="lastUpdate">--:--:--</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="seg">
+        <button id="btnLive" class="active">Live</button>
+        <button id="btn1h">1h</button>
+      </div>
+    </header>
+
+    <div class="grid kpi-grid">
+      <div id="cardV" class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">⚡</span> AC Voltage</div>
+        </div>
+        <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
+        <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">💡</span> Current</div>
+        </div>
+        <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
+        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">🏗️</span> Power</div>
+        </div>
+        <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
+        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">🔋</span> Energy</div>
+        </div>
+        <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
+        <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">📡</span> Frequency</div>
+        </div>
+        <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
+        <div class="kpi-foot"><span class="small-muted">Grid</span></div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-top">
+          <div class="kpi-label"><span class="kpi-icon">🧮</span> Power Factor</div>
+        </div>
+        <div class="kpi-value"><span id="PF">--</span></div>
+        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+      </div>
+    </div>
+
+    <div class="grid charts" style="margin-top:12px;">
+      <div class="card chart">
+        <div class="chart-head">
+          <div class="chart-title">📈 Voltage (last window)</div>
+          <div class="small-muted" id="chartHintV">--</div>
+        </div>
+        <canvas id="chartV"></canvas>
+      </div>
+
+      <div class="card chart">
+        <div class="chart-head">
+          <div class="chart-title">📉 Power (last window)</div>
+          <div class="small-muted" id="chartHintW">--</div>
+        </div>
+        <canvas id="chartW"></canvas>
+      </div>
+    </div>
+
+    <div style="margin:14px 2px 4px 2px;" class="small-muted">
+      Source: MQTT over WebSocket (EMQX) • Topics: <b>okas/pzem/panel1</b> + <b>okas/pzem/panel1/status</b>
+    </div>
+
+  </div>
 
 <script>
+  // ===== MQTT SETTINGS =====
+  const WS_URL = "wss://broker.emqx.io:8084/mqtt";
+  const TOPIC_DATA = "okas/pzem/panel1";
+  const TOPIC_STATUS = "okas/pzem/panel1/status";
 
-// CONNECT TO EMQX PUBLIC BROKER (WebSocket Secure)
-const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt")
+  // ===== UI SETTINGS =====
+  const V_LOW = 210;   // alarm threshold low
+  const V_HIGH = 245;  // alarm threshold high
+  document.getElementById("vLowTxt").innerText = V_LOW;
+  document.getElementById("vHighTxt").innerText = V_HIGH;
 
-client.on("connect", () => {
-  console.log("Connected")
-  client.subscribe("okas/pzem/panel1")
-})
+  // ===== BUFFERS (last 1 hour) =====
+  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50; // based on 5s interval + margin
+  const MAX_POINTS_LIVE = 120; // ~10 menit @5s
 
-client.on("message", (topic, message) => {
+  let rangeMode = "live"; // "live" or "1h"
 
-  const data = message.toString()
+  const buf = {
+    t: [],
+    V: [],
+    W: [],
+  };
 
-  // Expected format:
-  // V220,A1.2,W260,kWh0.123,Hz50,PF0.98
+  function trimBuffer(maxPoints){
+    while (buf.t.length > maxPoints){
+      buf.t.shift(); buf.V.shift(); buf.W.shift();
+    }
+  }
 
-  const items = data.split(",")
+  function fmtTime(d){
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mm = String(d.getMinutes()).padStart(2,"0");
+    const ss = String(d.getSeconds()).padStart(2,"0");
+    return `${hh}:${mm}:${ss}`;
+  }
 
-  items.forEach(item => {
+  function setLastUpdateNow(){
+    document.getElementById("lastUpdate").innerText = fmtTime(new Date());
+  }
 
-    if(item.startsWith("V"))   document.getElementById("V").innerText   = item.slice(1)
-    if(item.startsWith("A"))   document.getElementById("A").innerText   = item.slice(1)
-    if(item.startsWith("W"))   document.getElementById("W").innerText   = item.slice(1)
-    if(item.startsWith("kWh")) document.getElementById("kWh").innerText = item.slice(3)
-    if(item.startsWith("Hz"))  document.getElementById("Hz").innerText  = item.slice(2)
-    if(item.startsWith("PF"))  document.getElementById("PF").innerText  = item.slice(2)
+  // ===== LED helpers =====
+  function setLed(el, state){
+    el.classList.remove("ok","warn","bad");
+    if(state) el.classList.add(state);
+  }
 
-  })
+  // RSSI -> bars
+  function setRSSI(rssi){
+    const bars = document.querySelectorAll("#rssiBars .bar");
+    bars.forEach(b => b.classList.remove("on","warn","bad"));
 
-})
+    document.getElementById("rssiText").innerText = (rssi === null || isNaN(rssi)) ? "--" : rssi;
 
+    if (rssi === null || isNaN(rssi) || rssi === 99) return;
+
+    // map 0..31 -> 1..4 bars
+    let level = 1;
+    if (rssi >= 10) level = 2;
+    if (rssi >= 15) level = 3;
+    if (rssi >= 20) level = 4;
+
+    // color by quality
+    let cls = "on";
+    if (rssi < 10) cls = "bad";
+    else if (rssi < 15) cls = "warn";
+
+    for(let i=0;i<level;i++){
+      bars[i].classList.add(cls);
+    }
+  }
+
+  // ===== KPI Update =====
+  function setText(id, val){
+    document.getElementById(id).innerText = val;
+  }
+
+  function setVoltageAlarm(v){
+    const card = document.getElementById("cardV");
+    card.classList.remove("alarm");
+    if (isNaN(v)) return;
+    if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
+  }
+
+  // ===== Parse PZEM payload =====
+  // Expected normal:
+  // V233.5,A0.10,W15.8,kWh0.089,Hz50.0,PF0.66
+  function parseDataPayload(data){
+    if (!data) return null;
+
+    if (data.startsWith("STATUS:PZEM_OFF")){
+      return { type:"pzemEvent", pzem:"OFF" };
+    }
+    if (data.startsWith("STATUS:PZEM_ON")){
+      return { type:"pzemEvent", pzem:"ON" };
+    }
+
+    const items = data.split(",");
+    const out = {};
+    for(const item of items){
+      if(item.startsWith("V")) out.V = parseFloat(item.slice(1));
+      else if(item.startsWith("A")) out.A = parseFloat(item.slice(1));
+      else if(item.startsWith("W")) out.W = parseFloat(item.slice(1));
+      else if(item.startsWith("kWh")) out.kWh = parseFloat(item.slice(3));
+      else if(item.startsWith("Hz")) out.Hz = parseFloat(item.slice(2));
+      else if(item.startsWith("PF")) out.PF = parseFloat(item.slice(2));
+    }
+    // must have V to be considered valid
+    if (typeof out.V === "number" && !isNaN(out.V)) return { type:"data", ...out };
+    return null;
+  }
+
+  // ===== Parse STATUS topic =====
+  function parseStatusPayload(data){
+    // Examples:
+    // DEVICE_ONLINE (retained)
+    // DEVICE_OFFLINE (will)
+    // PZEM:ON / PZEM:OFF (retained)
+    // NET:OK,GPRS:OK,RSSI:22
+    if (!data) return null;
+
+    if (data === "DEVICE_ONLINE") return { type:"device", device:"ONLINE" };
+    if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
+
+    if (data.startsWith("PZEM:")){
+      const s = data.split(":")[1];
+      return { type:"pzem", pzem: (s === "OFF" ? "OFF" : "ON") };
+    }
+
+    if (data.startsWith("NET:")){
+      // find RSSI:number
+      const m = data.match(/RSSI:(\d+)/);
+      const rssi = m ? parseInt(m[1], 10) : null;
+      return { type:"net", raw:data, rssi };
+    }
+
+    return { type:"other", raw:data };
+  }
+
+  // ===== Chart.js Setup =====
+  const ctxV = document.getElementById("chartV").getContext("2d");
+  const ctxW = document.getElementById("chartW").getContext("2d");
+
+  const chartV = new Chart(ctxV, {
+    type: "line",
+    data: { labels: [], datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display:false } },
+      scales: {
+        x: { ticks: { maxTicksLimit: 6 } },
+        y: { ticks: { maxTicksLimit: 6 } }
+      }
+    }
+  });
+
+  const chartW = new Chart(ctxW, {
+    type: "line",
+    data: { labels: [], datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display:false } },
+      scales: {
+        x: { ticks: { maxTicksLimit: 6 } },
+        y: { ticks: { maxTicksLimit: 6 } }
+      }
+    }
+  });
+
+  // Make canvas height flexible
+  function setChartHeights(){
+    const charts = document.querySelectorAll(".card.chart");
+    charts.forEach(c => {
+      // set min height based on viewport
+      const vh = window.innerHeight;
+      c.style.minHeight = (vh < 700) ? "260px" : "320px";
+    });
+  }
+  window.addEventListener("resize", setChartHeights);
+  setChartHeights();
+
+  function redrawCharts(){
+    const maxPoints = (rangeMode === "1h") ? MAX_POINTS_1H : MAX_POINTS_LIVE;
+
+    // copy last window
+    const start = Math.max(0, buf.t.length - maxPoints);
+    const labels = buf.t.slice(start).map(t => fmtTime(new Date(t)));
+    const dataV = buf.V.slice(start);
+    const dataW = buf.W.slice(start);
+
+    chartV.data.labels = labels;
+    chartV.data.datasets[0].data = dataV;
+    chartV.update();
+
+    chartW.data.labels = labels;
+    chartW.data.datasets[0].data = dataW;
+    chartW.update();
+
+    document.getElementById("chartHintV").innerText = `${labels.length} points`;
+    document.getElementById("chartHintW").innerText = `${labels.length} points`;
+  }
+
+  // ===== Buttons =====
+  const btnLive = document.getElementById("btnLive");
+  const btn1h = document.getElementById("btn1h");
+
+  function setMode(mode){
+    rangeMode = mode;
+    btnLive.classList.toggle("active", mode === "live");
+    btn1h.classList.toggle("active", mode === "1h");
+    redrawCharts();
+  }
+  btnLive.addEventListener("click", () => setMode("live"));
+  btn1h.addEventListener("click", () => setMode("1h"));
+
+  // ===== Device/PZEM UI state =====
+  function setDeviceState(state){
+    const led = document.getElementById("ledDevice");
+    const txt = document.getElementById("deviceText");
+    if (state === "ONLINE"){
+      setLed(led, "ok");
+      txt.innerText = "DEVICE: ONLINE";
+    } else if (state === "OFFLINE"){
+      setLed(led, "bad");
+      txt.innerText = "DEVICE: OFFLINE";
+    } else {
+      setLed(led, null);
+      txt.innerText = "DEVICE: CONNECTING";
+    }
+  }
+
+  function setPzemState(state){
+    const led = document.getElementById("ledPzem");
+    const txt = document.getElementById("pzemText");
+    if (state === "ON"){
+      setLed(led, "ok");
+      txt.innerText = "PZEM: ON";
+    } else if (state === "OFF"){
+      setLed(led, "warn");
+      txt.innerText = "PZEM: OFF";
+      // set displayed values to 0 (UI only)
+      setText("V","0.0"); setText("A","0.00"); setText("W","0.0"); setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
+      setVoltageAlarm(0);
+    } else {
+      setLed(led, null);
+      txt.innerText = "PZEM: UNKNOWN";
+    }
+  }
+
+  // ===== MQTT CONNECT =====
+  setDeviceState("CONNECTING");
+  setPzemState("UNKNOWN");
+  setRSSI(null);
+
+  const client = mqtt.connect(WS_URL);
+
+  client.on("connect", () => {
+    console.log("Connected");
+    setDeviceState("ONLINE"); // dashboard connected to broker (not device)
+    client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
+  });
+
+  client.on("reconnect", () => {
+    console.log("Reconnecting...");
+  });
+
+  client.on("close", () => {
+    console.log("WS Closed");
+  });
+
+  client.on("error", (err) => {
+    console.log("MQTT error", err);
+  });
+
+  client.on("message", (topic, message) => {
+    const data = message.toString();
+    setLastUpdateNow();
+
+    if (topic === TOPIC_STATUS){
+      const s = parseStatusPayload(data);
+      if (!s) return;
+
+      if (s.type === "device"){
+        // This reflects the device state (LWT retained/will)
+        setDeviceState(s.device);
+      } else if (s.type === "pzem"){
+        setPzemState(s.pzem);
+      } else if (s.type === "net"){
+        setRSSI(s.rssi);
+      }
+      return;
+    }
+
+    if (topic === TOPIC_DATA){
+      const d = parseDataPayload(data);
+      if (!d) return;
+
+      if (d.type === "pzemEvent"){
+        setPzemState(d.pzem);
+        return;
+      }
+
+      if (d.type === "data"){
+        // If PZEM OFF retained is active, still allow update only if ON (optional)
+        // We'll update anyway; PZEM OFF event will zero UI.
+        setText("V", d.V.toFixed(1));
+        setText("A", (d.A ?? 0).toFixed(2));
+        setText("W", (d.W ?? 0).toFixed(1));
+        setText("kWh", (d.kWh ?? 0).toFixed(3));
+        setText("Hz", (d.Hz ?? 0).toFixed(1));
+        setText("PF", (d.PF ?? 0).toFixed(2));
+        setVoltageAlarm(d.V);
+
+        // push to buffer for charts
+        const t = Date.now();
+        buf.t.push(t);
+        buf.V.push(d.V);
+        buf.W.push(d.W);
+
+        // keep max 1 hour
+        trimBuffer(MAX_POINTS_1H);
+
+        redrawCharts();
+      }
+    }
+  });
 </script>
-
 </body>
 </html>
