@@ -51,7 +51,7 @@
     .title{
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:2px;
     }
     .title h1{
       margin:0;
@@ -61,11 +61,23 @@
       text-transform: uppercase;
       line-height: 1.05;
     }
+
+    /* Brand dibuat lebih besar dan lebih dekat */
     .title .brand{
       margin:0;
+      margin-top:-2px;
+      color: var(--text);
+      font-size: 14px;
+      letter-spacing:.35px;
+      font-weight: 800;
+      opacity: .92;
+    }
+    .title .location{
+      margin:0;
+      margin-top:-2px;
       color: var(--muted);
       font-size: 12px;
-      letter-spacing:.4px;
+      letter-spacing:.25px;
       font-weight: 700;
     }
 
@@ -76,7 +88,7 @@
       align-items:center;
       gap:10px;
       flex-wrap:wrap;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .pill{
@@ -231,9 +243,11 @@
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
       .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
-      .charts{ grid-template-columns: 1fr 1fr; }
+      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart sejajar */
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
+      .title .brand{ font-size: 15px; }
+      .title .location{ font-size: 12px; }
     }
 
     @media (max-width: 360px){
@@ -260,6 +274,7 @@
       <div class="title">
         <h1>SMART ENERGY METER</h1>
         <div class="brand">by MahaKaryaTeknologi</div>
+        <div class="location">Point Location : PJU DIPONEGORO</div>
 
         <div class="subtitle">
           <span class="pill">
@@ -349,6 +364,14 @@
         </div>
         <canvas id="chartW"></canvas>
       </div>
+
+      <div class="card chart">
+        <div class="chart-head">
+          <div class="chart-title">📊 Current (last window)</div>
+          <div class="small-muted" id="chartHintA">--</div>
+        </div>
+        <canvas id="chartA"></canvas>
+      </div>
     </div>
 
     <div style="margin:14px 2px 4px 2px;" class="small-muted">
@@ -364,22 +387,23 @@
   const TOPIC_STATUS = "okas/pzem/panel1/status";
 
   // ===== UI SETTINGS =====
-  const V_LOW = 210;   // alarm threshold low
-  const V_HIGH = 245;  // alarm threshold high
+  const V_LOW = 210;
+  const V_HIGH = 245;
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
 
-  // ===== BUFFERS (last 1 hour) =====
-  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50; // based on 5s interval + margin
-  const MAX_POINTS_LIVE = 120; // ~10 menit @5s
-  let rangeMode = "live"; // "live" or "1h"
+  // ===== BUFFERS =====
+  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
+  const MAX_POINTS_LIVE = 120;
+  let rangeMode = "live";
 
-  // FIX: store as {x: timestamp, y: value}
-  const buf = { V: [], W: [] };
+  // store as {x, y}
+  const buf = { V: [], W: [], A: [] };
 
   function trimBuffer(maxPoints){
     while (buf.V.length > maxPoints) buf.V.shift();
     while (buf.W.length > maxPoints) buf.W.shift();
+    while (buf.A.length > maxPoints) buf.A.shift();
   }
 
   function setLastUpdateNow(){
@@ -424,10 +448,8 @@
     if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
   }
 
-  // ===== Parse DATA topic =====
   function parseDataPayload(data){
     if (!data) return null;
-
     if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
     if (data.startsWith("STATUS:PZEM_ON"))  return { type:"pzemEvent", pzem:"ON"  };
 
@@ -445,7 +467,6 @@
     return null;
   }
 
-  // ===== Parse STATUS topic =====
   function parseStatusPayload(data){
     if (!data) return null;
 
@@ -466,55 +487,40 @@
     return null;
   }
 
-  // ===== Chart.js Setup (FIX: x = timestamp numeric) =====
-  const ctxV = document.getElementById("chartV").getContext("2d");
-  const ctxW = document.getElementById("chartW").getContext("2d");
+  // ===== Chart helpers =====
+  function xTicks(){
+    return {
+      type: "linear",
+      ticks: {
+        maxTicksLimit: 6,
+        callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
+      }
+    };
+  }
+  function yTicks(){
+    return { ticks: { maxTicksLimit: 6 } };
+  }
 
-  const chartV = new Chart(ctxV, {
+  // ===== Charts =====
+  const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      parsing: false,
-      plugins: { legend: { display:false } },
-      scales: {
-        x: {
-          type: "linear",
-          ticks: {
-            maxTicksLimit: 6,
-            callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
-          }
-        },
-        y: { ticks: { maxTicksLimit: 6 } }
-      }
-    }
+    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
 
-  const chartW = new Chart(ctxW, {
+  const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      parsing: false,
-      plugins: { legend: { display:false } },
-      scales: {
-        x: {
-          type: "linear",
-          ticks: {
-            maxTicksLimit: 6,
-            callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
-          }
-        },
-        y: { ticks: { maxTicksLimit: 6 } }
-      }
-    }
+    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
 
-  // Throttle redraw biar tidak terasa "refresh"
+  const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
+    type: "line",
+    data: { datasets: [{ label:"A", data: [], tension: 0.25, pointRadius: 0 }] },
+    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
+  });
+
+  // ===== Redraw =====
   let lastRedraw = 0;
   function redrawCharts(){
     const now = Date.now();
@@ -523,22 +529,19 @@
 
     const maxPoints = (rangeMode === "1h") ? MAX_POINTS_1H : MAX_POINTS_LIVE;
 
-    const vStart = Math.max(0, buf.V.length - maxPoints);
-    const wStart = Math.max(0, buf.W.length - maxPoints);
+    const vData = buf.V.slice(Math.max(0, buf.V.length - maxPoints));
+    const wData = buf.W.slice(Math.max(0, buf.W.length - maxPoints));
+    const aData = buf.A.slice(Math.max(0, buf.A.length - maxPoints));
 
-    const vData = buf.V.slice(vStart);
-    const wData = buf.W.slice(wStart);
+    if (vData.length < 2 && wData.length < 2 && aData.length < 2) return;
 
-    if (vData.length < 2 && wData.length < 2) return;
-
-    chartV.data.datasets[0].data = vData;
-    chartV.update("none");
-
-    chartW.data.datasets[0].data = wData;
-    chartW.update("none");
+    chartV.data.datasets[0].data = vData; chartV.update("none");
+    chartW.data.datasets[0].data = wData; chartW.update("none");
+    chartA.data.datasets[0].data = aData; chartA.update("none");
 
     document.getElementById("chartHintV").innerText = `${vData.length} points`;
     document.getElementById("chartHintW").innerText = `${wData.length} points`;
+    document.getElementById("chartHintA").innerText = `${aData.length} points`;
   }
 
   // ===== Buttons =====
@@ -579,8 +582,8 @@
     } else if (state === "OFF"){
       setLed(led, "warn");
       txt.innerText = "PZEM: OFF";
-      // UI only: set 0
-      setText("V","0.0"); setText("A","0.00"); setText("W","0.0"); setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
+      setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
+      setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
     } else {
       setLed(led, null);
@@ -597,8 +600,7 @@
   const client = mqtt.connect(WS_URL);
 
   client.on("connect", () => {
-    // dashboard sudah connect ke broker (bukan status device)
-    setDeviceState("ONLINE");
+    setDeviceState("ONLINE"); // dashboard connect broker
     client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
   });
 
@@ -637,6 +639,7 @@
         const t = Date.now();
         buf.V.push({ x: t, y: d.V });
         buf.W.push({ x: t, y: d.W });
+        buf.A.push({ x: t, y: d.A ?? 0 });
 
         trimBuffer(MAX_POINTS_1H);
         redrawCharts();
