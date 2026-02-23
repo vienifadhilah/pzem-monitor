@@ -62,7 +62,7 @@
       line-height: 1.05;
     }
 
-    /* Brand dibuat lebih besar dan lebih dekat */
+    /* Brand lebih besar & lebih rapat */
     .title .brand{
       margin:0;
       margin-top:-2px;
@@ -239,15 +239,14 @@
       box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset;
     }
 
-    /* Desktop true landscape */
+    /* Desktop */
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
       .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
-      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart sejajar */
+      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart */
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
       .title .brand{ font-size: 15px; }
-      .title .location{ font-size: 12px; }
     }
 
     @media (max-width: 360px){
@@ -264,120 +263,196 @@
       .card.chart { height: 320px; }
       .card.chart canvas { height: 240px !important; }
     }
+
+    /* ===== Splash / Loading ===== */
+    #splash{
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+      text-align:center;
+    }
+    .splash-card{
+      width: min(520px, 92vw);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 26px 22px;
+    }
+    .splash-title{
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing:.9px;
+      text-transform: uppercase;
+      margin: 0 0 8px 0;
+    }
+    .splash-brand{
+      font-size: 15px;
+      font-weight: 850;
+      opacity: .92;
+      margin: 0 0 6px 0;
+    }
+    .splash-loc{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 750;
+      margin: 0 0 18px 0;
+    }
+    .splash-loading{
+      color: var(--muted);
+      font-weight: 750;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .spinner{
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.20);
+      border-top-color: rgba(77,163,255,.9);
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* app disembunyikan dulu sampai data siap */
+    #app{ display:none; }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
 
-    <header>
-      <div class="title">
-        <h1>SMART ENERGY METER</h1>
-        <div class="brand">by MahaKaryaTeknologi</div>
-        <div class="location">Point Location : PJU DIPONEGORO</div>
+  <!-- Splash / Loading -->
+  <div id="splash">
+    <div class="splash-card">
+      <div class="splash-title">SMART ENERGY METER</div>
+      <div class="splash-brand">MahaKaryaTeknologi</div>
+      <div class="splash-loc">Point Location : PJU DIPONEGORO</div>
 
-        <div class="subtitle">
-          <span class="pill">
-            <span id="ledDevice" class="led"></span>
-            <span id="deviceText">DEVICE: CONNECTING</span>
-          </span>
+      <div class="splash-loading">
+        <span class="spinner"></span>
+        <span id="loadingText">Loading data...</span>
+      </div>
+    </div>
+  </div>
 
-          <span class="pill">
-            <span id="ledPzem" class="led"></span>
-            <span id="pzemText">PZEM: UNKNOWN</span>
-          </span>
+  <!-- App (Dashboard) -->
+  <div id="app">
+    <div class="wrap">
 
-          <span class="pill">
-            <span class="small-muted">RSSI</span>
-            <span id="rssiBars" class="rssi" aria-label="RSSI">
-              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      <header>
+        <div class="title">
+          <h1>SMART ENERGY METER</h1>
+          <div class="brand">MahaKaryaTeknologi</div>
+          <div class="location">Point Location : PJU DIPONEGORO</div>
+
+          <div class="subtitle">
+            <span class="pill">
+              <span id="ledDevice" class="led"></span>
+              <span id="deviceText">DEVICE: CONNECTING</span>
             </span>
-            <span id="rssiText" class="small-muted">--</span>
-          </span>
 
-          <span class="pill">
-            <span class="small-muted">Last update</span>
-            <span id="lastUpdate">--:--:--</span>
-          </span>
+            <span class="pill">
+              <span id="ledPzem" class="led"></span>
+              <span id="pzemText">PZEM: UNKNOWN</span>
+            </span>
+
+            <span class="pill">
+              <span class="small-muted">RSSI</span>
+              <span id="rssiBars" class="rssi" aria-label="RSSI">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </span>
+              <span id="rssiText" class="small-muted">--</span>
+            </span>
+
+            <span class="pill">
+              <span class="small-muted">Last update</span>
+              <span id="lastUpdate">--:--:--</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="seg">
+          <button id="btnLive" class="active">Live</button>
+          <button id="btn1h">1h</button>
+        </div>
+      </header>
+
+      <div class="grid kpi-grid">
+        <div id="cardV" class="card">
+          <div class="kpi-top">
+            <div class="kpi-label">⚡ AC Voltage</div>
+          </div>
+          <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
+          <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
+          <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
+          <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
+          <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
+          <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
+          <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
+          <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
+          <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
+          <div class="kpi-foot"><span class="small-muted">Grid</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
+          <div class="kpi-value"><span id="PF">--</span></div>
+          <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
       </div>
 
-      <div class="seg">
-        <button id="btnLive" class="active">Live</button>
-        <button id="btn1h">1h</button>
-      </div>
-    </header>
-
-    <div class="grid kpi-grid">
-      <div id="cardV" class="card">
-        <div class="kpi-top">
-          <div class="kpi-label">⚡ AC Voltage</div>
+      <div class="grid charts" style="margin-top:12px;">
+        <div class="card chart">
+          <div class="chart-head">
+            <div class="chart-title">📈 Voltage (last window)</div>
+            <div class="small-muted" id="chartHintV">--</div>
+          </div>
+          <canvas id="chartV"></canvas>
         </div>
-        <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
-        <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
+
+        <div class="card chart">
+          <div class="chart-head">
+            <div class="chart-title">📉 Power (last window)</div>
+            <div class="small-muted" id="chartHintW">--</div>
+          </div>
+          <canvas id="chartW"></canvas>
+        </div>
+
+        <div class="card chart">
+          <div class="chart-head">
+            <div class="chart-title">📊 Current (last window)</div>
+            <div class="small-muted" id="chartHintA">--</div>
+          </div>
+          <canvas id="chartA"></canvas>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
-        <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
-        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+      <div style="margin:14px 2px 4px 2px;" class="small-muted">
+        Source: MQTT over WebSocket (EMQX) • Topics: <b>okas/pzem/panel1</b> + <b>okas/pzem/panel1/status</b>
       </div>
 
-      <div class="card">
-        <div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
-        <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
-        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
-      </div>
-
-      <div class="card">
-        <div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
-        <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
-        <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
-      </div>
-
-      <div class="card">
-        <div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
-        <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
-        <div class="kpi-foot"><span class="small-muted">Grid</span></div>
-      </div>
-
-      <div class="card">
-        <div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
-        <div class="kpi-value"><span id="PF">--</span></div>
-        <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
-      </div>
     </div>
-
-    <div class="grid charts" style="margin-top:12px;">
-      <div class="card chart">
-        <div class="chart-head">
-          <div class="chart-title">📈 Voltage (last window)</div>
-          <div class="small-muted" id="chartHintV">--</div>
-        </div>
-        <canvas id="chartV"></canvas>
-      </div>
-
-      <div class="card chart">
-        <div class="chart-head">
-          <div class="chart-title">📉 Power (last window)</div>
-          <div class="small-muted" id="chartHintW">--</div>
-        </div>
-        <canvas id="chartW"></canvas>
-      </div>
-
-      <div class="card chart">
-        <div class="chart-head">
-          <div class="chart-title">📊 Current (last window)</div>
-          <div class="small-muted" id="chartHintA">--</div>
-        </div>
-        <canvas id="chartA"></canvas>
-      </div>
-    </div>
-
-    <div style="margin:14px 2px 4px 2px;" class="small-muted">
-      Source: MQTT over WebSocket (EMQX) • Topics: <b>okas/pzem/panel1</b> + <b>okas/pzem/panel1/status</b>
-    </div>
-
   </div>
 
 <script>
@@ -392,13 +467,25 @@
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
 
+  // ===== Splash control =====
+  let appShown = false;
+  function showDashboard(){
+    if(appShown) return;
+    appShown = true;
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  }
+
+  function setLoadingText(txt){
+    const el = document.getElementById("loadingText");
+    if(el) el.innerText = txt;
+  }
+
   // ===== BUFFERS =====
   const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
   const MAX_POINTS_LIVE = 120;
   let rangeMode = "live";
-
-  // store as {x, y}
-  const buf = { V: [], W: [], A: [] };
+  const buf = { V: [], W: [], A: [] }; // {x,y}
 
   function trimBuffer(maxPoints){
     while (buf.V.length > maxPoints) buf.V.shift();
@@ -487,7 +574,6 @@
     return null;
   }
 
-  // ===== Chart helpers =====
   function xTicks(){
     return {
       type: "linear",
@@ -497,9 +583,7 @@
       }
     };
   }
-  function yTicks(){
-    return { ticks: { maxTicksLimit: 6 } };
-  }
+  function yTicks(){ return { ticks: { maxTicksLimit: 6 } }; }
 
   // ===== Charts =====
   const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
@@ -591,27 +675,32 @@
     }
   }
 
-  // init
+  // init status (dashboard belum ditampilkan)
   setDeviceState("CONNECTING");
   setPzemState("UNKNOWN");
   setRSSI(null);
 
   // ===== MQTT =====
+  setLoadingText("Connecting broker...");
   const client = mqtt.connect(WS_URL);
 
   client.on("connect", () => {
-    setDeviceState("ONLINE"); // dashboard connect broker
+    // ini status koneksi dashboard -> broker
+    setLoadingText("Subscribed, waiting first data...");
     client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
   });
 
   client.on("message", (topic, message) => {
     const data = message.toString();
-    setLastUpdateNow();
+    // splash tetap tampil sampai data valid pertama masuk
+    // (tetap update loading text biar hidup)
+    setLoadingText("Receiving data...");
 
     if (topic === TOPIC_STATUS){
       const s = parseStatusPayload(data);
       if (!s) return;
 
+      // status-status disiapkan untuk dashboard (nanti muncul saat data valid masuk)
       if (s.type === "device") setDeviceState(s.device);
       if (s.type === "pzem") setPzemState(s.pzem);
       if (s.type === "net") setRSSI(s.rssi);
@@ -623,11 +712,18 @@
       if (!d) return;
 
       if (d.type === "pzemEvent"){
+        // tetap simpan status pzem untuk ketika dashboard muncul
         setPzemState(d.pzem);
         return;
       }
 
       if (d.type === "data"){
+        // ✅ MUNCULKAN DASHBOARD SAAT DATA VALID PERTAMA MASUK
+        showDashboard();
+
+        // setelah dashboard tampil, update waktu & data
+        setLastUpdateNow();
+
         setText("V", d.V.toFixed(1));
         setText("A", (d.A ?? 0).toFixed(2));
         setText("W", (d.W ?? 0).toFixed(1));
@@ -636,10 +732,16 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
+        // kalau device status belum pernah diterima, minimal set online
+        // (agar tidak stuck CONNECTING)
+        // hanya jika masih CONNECTING
+        const txt = document.getElementById("deviceText");
+        if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
+
         const t = Date.now();
         buf.V.push({ x: t, y: d.V });
         buf.W.push({ x: t, y: d.W });
-        buf.A.push({ x: t, y: d.A ?? 0 });
+        buf.A.push({ x: t, y: (d.A ?? 0) });
 
         trimBuffer(MAX_POINTS_1H);
         redrawCharts();
