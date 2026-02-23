@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PZEM MONITOR</title>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+<style>
+body{
+  font-family:Arial;
+  background:#111;
+  color:#fff;
+  text-align:center;
+}
+.card{
+  background:#1e1e1e;
+  margin:10px;
+  padding:15px;
+  border-radius:12px;
+  font-size:22px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>⚡ MONITOR LISTRIK REALTIME</h2>
+
+<div class="card">Voltage : <span id="V">--</span> V</div>
+<div class="card">Current : <span id="A">--</span> A</div>
+<div class="card">Power   : <span id="W">--</span> W</div>
+<div class="card">Energy  : <span id="kWh">--</span> kWh</div>
+<div class="card">Freq    : <span id="Hz">--</span> Hz</div>
+<div class="card">PF      : <span id="PF">--</span></div>
+
+<script>
+
+// CONNECT TO EMQX PUBLIC BROKER (WebSocket Secure)
+const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt")
+
+client.on("connect", () => {
+  console.log("Connected")
+  client.subscribe("pzem/okas/panel1")
+})
+
+client.on("message", (topic, message) => {
+
+  const data = message.toString()
+
+  // Expected format:
+  // V220,A1.2,W260,kWh0.123,Hz50,PF0.98
+
+  const items = data.split(",")
+
+  items.forEach(item => {
+
+    if(item.startsWith("V"))   document.getElementById("V").innerText   = item.slice(1)
+    if(item.startsWith("A"))   document.getElementById("A").innerText   = item.slice(1)
+    if(item.startsWith("W"))   document.getElementById("W").innerText   = item.slice(1)
+    if(item.startsWith("kWh")) document.getElementById("kWh").innerText = item.slice(3)
+    if(item.startsWith("Hz"))  document.getElementById("Hz").innerText  = item.slice(2)
+    if(item.startsWith("PF"))  document.getElementById("PF").innerText  = item.slice(2)
+
+  })
+
+})
+
+</script>
+
+</body>
+</html>
