@@ -17,7 +17,6 @@
       --ok:#24d18a;
       --warn:#f7c948;
       --bad:#ff4d4d;
-      --accent:#4da3ff;
 
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 16px;
@@ -61,8 +60,6 @@
       text-transform: uppercase;
       line-height: 1.05;
     }
-
-    /* Brand lebih besar & lebih rapat */
     .title .brand{
       margin:0;
       margin-top:-2px;
@@ -239,11 +236,10 @@
       box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset;
     }
 
-    /* Desktop */
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
       .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
-      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart */
+      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart sejajar */
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
       .title .brand{ font-size: 15px; }
@@ -319,7 +315,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* app disembunyikan dulu sampai data siap */
+    /* app disembunyikan dulu sampai ada pesan valid (data/status/pzem-off) */
     #app{ display:none; }
   </style>
 </head>
@@ -330,7 +326,7 @@
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
-      <div class="splash-brand">MahaKaryaTeknologi</div>
+      <div class="splash-brand">by MahaKaryaTeknologi</div>
       <div class="splash-loc">Point Location : PJU DIPONEGORO</div>
 
       <div class="splash-loading">
@@ -347,7 +343,7 @@
       <header>
         <div class="title">
           <h1>SMART ENERGY METER</h1>
-          <div class="brand">MahaKaryaTeknologi</div>
+          <div class="brand">by MahaKaryaTeknologi</div>
           <div class="location">Point Location : PJU DIPONEGORO</div>
 
           <div class="subtitle">
@@ -475,7 +471,6 @@
     document.getElementById("splash").style.display = "none";
     document.getElementById("app").style.display = "block";
   }
-
   function setLoadingText(txt){
     const el = document.getElementById("loadingText");
     if(el) el.innerText = txt;
@@ -666,6 +661,7 @@
     } else if (state === "OFF"){
       setLed(led, "warn");
       txt.innerText = "PZEM: OFF";
+      // UI only: set 0
       setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
       setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
@@ -675,7 +671,7 @@
     }
   }
 
-  // init status (dashboard belum ditampilkan)
+  // init (app masih hidden)
   setDeviceState("CONNECTING");
   setPzemState("UNKNOWN");
   setRSSI(null);
@@ -685,22 +681,22 @@
   const client = mqtt.connect(WS_URL);
 
   client.on("connect", () => {
-    // ini status koneksi dashboard -> broker
-    setLoadingText("Subscribed, waiting first data...");
+    setLoadingText("Subscribed, waiting messages...");
     client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
   });
 
   client.on("message", (topic, message) => {
     const data = message.toString();
-    // splash tetap tampil sampai data valid pertama masuk
-    // (tetap update loading text biar hidup)
-    setLoadingText("Receiving data...");
+    setLoadingText("Receiving...");
 
     if (topic === TOPIC_STATUS){
       const s = parseStatusPayload(data);
       if (!s) return;
 
-      // status-status disiapkan untuk dashboard (nanti muncul saat data valid masuk)
+      // ✅ FIX: begitu ada STATUS valid, langsung tampil dashboard
+      showDashboard();
+      setLastUpdateNow();
+
       if (s.type === "device") setDeviceState(s.device);
       if (s.type === "pzem") setPzemState(s.pzem);
       if (s.type === "net") setRSSI(s.rssi);
@@ -712,16 +708,15 @@
       if (!d) return;
 
       if (d.type === "pzemEvent"){
-        // tetap simpan status pzem untuk ketika dashboard muncul
+        // ✅ FIX: PZEM_OFF / PZEM_ON juga dianggap "data sudah masuk"
+        showDashboard();
+        setLastUpdateNow();
         setPzemState(d.pzem);
         return;
       }
 
       if (d.type === "data"){
-        // ✅ MUNCULKAN DASHBOARD SAAT DATA VALID PERTAMA MASUK
         showDashboard();
-
-        // setelah dashboard tampil, update waktu & data
         setLastUpdateNow();
 
         setText("V", d.V.toFixed(1));
@@ -732,9 +727,7 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
-        // kalau device status belum pernah diterima, minimal set online
-        // (agar tidak stuck CONNECTING)
-        // hanya jika masih CONNECTING
+        // kalau belum pernah dapat device status, minimal set ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
 
