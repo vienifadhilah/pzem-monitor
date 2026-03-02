@@ -76,6 +76,16 @@
       font-size: 12px;
       letter-spacing:.25px;
       font-weight: 700;
+      display:flex;
+      gap:6px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .title .location a{
+      color: rgba(77,163,255,.95);
+      text-decoration:none;
+      font-weight:800;
+      border-bottom: 1px dashed rgba(77,163,255,.55);
     }
 
     .subtitle{
@@ -239,7 +249,7 @@
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
       .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
-      .charts{ grid-template-columns: 1fr 1fr 1fr; } /* 3 chart sejajar */
+      .charts{ grid-template-columns: 1fr 1fr 1fr; }
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
       .title .brand{ font-size: 15px; }
@@ -252,7 +262,6 @@
 
     .small-muted{ color: var(--muted); font-size: 12px; }
 
-    /* FIX: tinggi chart stabil (hilangkan blank/flicker) */
     .card.chart { height: 420px; }
     .card.chart canvas { width: 100% !important; height: 340px !important; }
     @media (max-width: 860px){
@@ -260,7 +269,7 @@
       .card.chart canvas { height: 240px !important; }
     }
 
-    /* ===== Splash / Loading ===== */
+    /* Splash / Loading */
     #splash{
       min-height: 100vh;
       display:flex;
@@ -315,7 +324,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* app disembunyikan dulu sampai ada pesan valid (data/status/pzem-off) */
     #app{ display:none; }
   </style>
 </head>
@@ -327,7 +335,7 @@
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
       <div class="splash-brand">by MahaKaryaTeknologi</div>
-      <div class="splash-loc">Point Location : PJU DIPONEGORO</div>
+      <div class="splash-loc" id="splashLoc">Point Location : waiting GPS...</div>
 
       <div class="splash-loading">
         <span class="spinner"></span>
@@ -344,7 +352,12 @@
         <div class="title">
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
-          <div class="location">Point Location : PJU DIPONEGORO</div>
+
+          <!-- REAL LOCATION -->
+          <div class="location">
+            <span id="locText">Point Location : waiting GPS...</span>
+            <a id="locLink" href="#" target="_blank" rel="noopener" style="display:none;">Open Maps</a>
+          </div>
 
           <div class="subtitle">
             <span class="pill">
@@ -445,17 +458,29 @@
       </div>
 
       <div style="margin:14px 2px 4px 2px;" class="small-muted">
-        Source: MQTT over WebSocket (EMQX) • Topics: <b>okas/pzem/panel1</b> + <b>okas/pzem/panel1/status</b>
+        Source: MQTT over WebSocket Secure (HiveMQ Cloud) • Topics:
+        <b id="tData"></b> + <b id="tStatus"></b>
       </div>
 
     </div>
   </div>
 
 <script>
-  // ===== MQTT SETTINGS =====
-  const WS_URL = "wss://broker.emqx.io:8084/mqtt";
-  const TOPIC_DATA = "okas/pzem/panel1";
-  const TOPIC_STATUS = "okas/pzem/panel1/status";
+  // ===== MQTT SETTINGS (HiveMQ Cloud WSS) =====
+  const WS_URL = "wss://aea4e9b5cb1943fb9e170f5d0d9caa1b.s1.eu.hivemq.cloud:8884/mqtt";
+
+  // ===== TOPICS (sesuai firmware ESP) =====
+  // Kalau kamu ubah via CONFIG USB, tinggal ganti 2 baris ini.
+  const TOPIC_DATA   = "FADHIL/FATHOM/DATA";
+  const TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
+
+  // ===== AUTH (sesuai firmware ESP) =====
+  const MQTT_USER = "fathomtroops";
+  const MQTT_PASS = "Mule1234";
+
+  // tampilkan topics di footer
+  document.getElementById("tData").innerText = TOPIC_DATA;
+  document.getElementById("tStatus").innerText = TOPIC_STATUS;
 
   // ===== UI SETTINGS =====
   const V_LOW = 210;
@@ -474,6 +499,30 @@
   function setLoadingText(txt){
     const el = document.getElementById("loadingText");
     if(el) el.innerText = txt;
+  }
+
+  // ===== REAL LOCATION (from STATUS: LOC:https://maps.google.com/?q=lat,lon) =====
+  let lastLocUrl = "";
+  function setLocationFromUrl(url){
+    if(!url || typeof url !== "string") return;
+    if(!url.startsWith("https://maps.google.com/?q=")) return;
+    if(url === lastLocUrl) return;
+    lastLocUrl = url;
+
+    const q = url.split("?q=")[1] || "";
+    const locText = `Point Location : ${q}`;
+
+    const el1 = document.getElementById("locText");
+    const el2 = document.getElementById("splashLoc");
+    if(el1) el1.innerText = locText;
+    if(el2) el2.innerText = locText;
+
+    const a = document.getElementById("locLink");
+    if(a){
+      a.href = url;
+      a.style.display = "inline";
+      a.innerText = "Open Maps";
+    }
   }
 
   // ===== BUFFERS =====
@@ -555,6 +604,12 @@
     if (data === "DEVICE_ONLINE") return { type:"device", device:"ONLINE" };
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
+    // LOC:https://maps.google.com/?q=...
+    if (data.startsWith("LOC:")){
+      const url = data.slice(4).trim();
+      return { type:"loc", url };
+    }
+
     if (data.startsWith("PZEM:")){
       const s = data.split(":")[1];
       return { type:"pzem", pzem: (s === "OFF" ? "OFF" : "ON") };
@@ -566,6 +621,7 @@
       return { type:"net", rssi };
     }
 
+    // UPTIME:... / BOOT:... / CFG:SAVED / dll -> tidak dipakai UI, aman diabaikan
     return null;
   }
 
@@ -661,7 +717,6 @@
     } else if (state === "OFF"){
       setLed(led, "warn");
       txt.innerText = "PZEM: OFF";
-      // UI only: set 0
       setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
       setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
@@ -676,13 +731,34 @@
   setPzemState("UNKNOWN");
   setRSSI(null);
 
-  // ===== MQTT =====
-  setLoadingText("Connecting broker...");
-  const client = mqtt.connect(WS_URL);
+  // ===== MQTT (HiveMQ WSS + Auth) =====
+  setLoadingText("Connecting HiveMQ broker...");
+  const client = mqtt.connect(WS_URL, {
+    username: MQTT_USER,
+    password: MQTT_PASS,
+    clientId: "WEB_DASH_" + Math.random().toString(16).slice(2, 10),
+    clean: true,
+    reconnectPeriod: 2000,
+    connectTimeout: 15000
+  });
 
   client.on("connect", () => {
     setLoadingText("Subscribed, waiting messages...");
-    client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
+    client.subscribe([TOPIC_DATA, TOPIC_STATUS], { qos: 0 });
+  });
+
+  client.on("reconnect", () => {
+    setLoadingText("Reconnecting...");
+    setDeviceState("CONNECTING");
+  });
+
+  client.on("close", () => {
+    setLoadingText("Disconnected...");
+    setDeviceState("OFFLINE");
+  });
+
+  client.on("error", (err) => {
+    setLoadingText("Error: " + (err?.message || "unknown"));
   });
 
   client.on("message", (topic, message) => {
@@ -693,13 +769,14 @@
       const s = parseStatusPayload(data);
       if (!s) return;
 
-      // ✅ FIX: begitu ada STATUS valid, langsung tampil dashboard
+      // begitu ada STATUS valid, tampil dashboard
       showDashboard();
       setLastUpdateNow();
 
       if (s.type === "device") setDeviceState(s.device);
       if (s.type === "pzem") setPzemState(s.pzem);
       if (s.type === "net") setRSSI(s.rssi);
+      if (s.type === "loc") setLocationFromUrl(s.url);
       return;
     }
 
@@ -708,7 +785,6 @@
       if (!d) return;
 
       if (d.type === "pzemEvent"){
-        // ✅ FIX: PZEM_OFF / PZEM_ON juga dianggap "data sudah masuk"
         showDashboard();
         setLastUpdateNow();
         setPzemState(d.pzem);
@@ -727,7 +803,6 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
-        // kalau belum pernah dapat device status, minimal set ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
 
