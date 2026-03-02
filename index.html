@@ -21,7 +21,6 @@
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 16px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -32,54 +31,14 @@
       color:var(--text);
       overflow-x:hidden;
     }
-
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px;
-    }
-
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding: 6px 2px 14px 2px;
-    }
-
-    .title{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .title h1{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:.6px;
-      font-weight: 850;
-      text-transform: uppercase;
-      line-height: 1.05;
-    }
-    .title .brand{
-      margin:0;
-      margin-top:-2px;
-      color: var(--text);
-      font-size: 14px;
-      letter-spacing:.35px;
-      font-weight: 800;
-      opacity: .92;
-    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 14px; }
+    header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding: 6px 2px 14px 2px; }
+    .title{ display:flex; flex-direction:column; gap:2px; }
+    .title h1{ margin:0; font-size: 18px; letter-spacing:.6px; font-weight: 850; text-transform: uppercase; line-height: 1.05; }
+    .title .brand{ margin:0; margin-top:-2px; color: var(--text); font-size: 14px; letter-spacing:.35px; font-weight: 800; opacity: .92; }
     .title .location{
-      margin:0;
-      margin-top:-2px;
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing:.25px;
-      font-weight: 700;
-      display:flex;
-      gap:6px;
-      align-items:center;
-      flex-wrap:wrap;
+      margin:0; margin-top:-2px; color: var(--muted); font-size: 12px; letter-spacing:.25px; font-weight: 700;
+      display:flex; gap:6px; align-items:center; flex-wrap:wrap;
     }
     .title .location a{
       color: rgba(77,163,255,.95);
@@ -87,49 +46,20 @@
       font-weight:800;
       border-bottom: 1px dashed rgba(77,163,255,.55);
     }
-
     .subtitle{
-      color:var(--muted);
-      font-size:12px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
+      color:var(--muted); font-size:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 10px;
     }
-
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius:999px;
-      box-shadow: var(--shadow);
-      white-space:nowrap;
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03); border-radius:999px; box-shadow: var(--shadow); white-space:nowrap;
     }
-
-    .led{
-      width:10px;height:10px;border-radius:50%;
-      background: #556;
-      box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
-    }
+    .led{ width:10px;height:10px;border-radius:50%; background: #556; box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset; }
     .led.ok{ background: var(--ok); box-shadow: 0 0 12px rgba(36,209,138,.45); }
     .led.warn{ background: var(--warn); box-shadow: 0 0 12px rgba(247,201,72,.35); }
     .led.bad{ background: var(--bad); box-shadow: 0 0 12px rgba(255,77,77,.35); }
 
-    .rssi{
-      display:inline-flex;
-      gap:3px;
-      align-items:flex-end;
-      height:12px;
-    }
-    .bar{
-      width:4px;
-      background: rgba(159,176,195,.35);
-      border-radius:2px;
-    }
+    .rssi{ display:inline-flex; gap:3px; align-items:flex-end; height:12px; }
+    .bar{ width:4px; background: rgba(159,176,195,.35); border-radius:2px; }
     .bar.on{ background: var(--ok); }
     .bar.warn{ background: var(--warn); }
     .bar.bad{ background: var(--bad); }
@@ -140,111 +70,32 @@
 
     .grid{ display:grid; gap:12px; }
     .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
-
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
+      border:1px solid var(--stroke); border-radius: 16px; padding: 14px; box-shadow: var(--shadow);
+      position:relative; overflow:hidden;
     }
-
     .card:before{
-      content:"";
-      position:absolute;
-      inset:-40px -80px auto auto;
-      width:180px;height:180px;
-      background: radial-gradient(circle, rgba(77,163,255,.18), transparent 60%);
-      transform: rotate(18deg);
-      pointer-events:none;
+      content:""; position:absolute; inset:-40px -80px auto auto; width:180px;height:180px;
+      background: radial-gradient(circle, rgba(77,163,255,.18), transparent 60%); transform: rotate(18deg); pointer-events:none;
     }
-
-    .kpi-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 8px;
-    }
-    .kpi-label{
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing:.25px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      text-transform: uppercase;
-      font-weight: 750;
-    }
-    .kpi-value{
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing:.3px;
-      line-height:1.05;
-    }
-    .kpi-unit{
-      color: var(--muted);
-      font-size: 12px;
-      margin-left: 6px;
-      font-weight: 750;
-    }
-    .kpi-foot{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .alarm{
-      border-color: rgba(255,77,77,.7) !important;
-      box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important;
-    }
+    .kpi-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
+    .kpi-label{ color: var(--muted); font-size: 12px; letter-spacing:.25px; display:flex; align-items:center; gap:8px; text-transform: uppercase; font-weight: 750; }
+    .kpi-value{ font-size: 28px; font-weight: 900; letter-spacing:.3px; line-height:1.05; }
+    .kpi-unit{ color: var(--muted); font-size: 12px; margin-left: 6px; font-weight: 750; }
+    .kpi-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .alarm{ border-color: rgba(255,77,77,.7) !important; box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important; }
     .alarm .kpi-value{ color: var(--bad); }
 
     .charts{ grid-template-columns: 1fr; }
-
-    .chart-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
-    .chart-title{
-      font-size: 13px;
-      letter-spacing:.25px;
-      color: var(--muted);
-      text-transform: uppercase;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight: 800;
-    }
-
-    .seg{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
+    .chart-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
+    .chart-title{ font-size: 13px; letter-spacing:.25px; color: var(--muted); text-transform: uppercase; display:flex; align-items:center; gap:8px; font-weight: 800; }
+    .seg{ display:flex; gap:6px; flex-wrap:wrap; }
     .seg button{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      padding: 7px 10px;
-      border-radius: 10px;
-      cursor:pointer;
-      font-weight: 750;
-      font-size: 12px;
+      border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text);
+      padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 750; font-size: 12px;
     }
-    .seg button.active{
-      border-color: rgba(77,163,255,.55);
-      box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset;
-    }
+    .seg button.active{ border-color: rgba(77,163,255,.55); box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset; }
 
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
@@ -255,13 +106,7 @@
       .title .brand{ font-size: 15px; }
     }
 
-    @media (max-width: 360px){
-      .kpi-value{ font-size: 24px; }
-      .title h1{ font-size: 16px; }
-    }
-
     .small-muted{ color: var(--muted); font-size: 12px; }
-
     .card.chart { height: 420px; }
     .card.chart canvas { width: 100% !important; height: 340px !important; }
     @media (max-width: 860px){
@@ -269,59 +114,16 @@
       .card.chart canvas { height: 240px !important; }
     }
 
-    /* Splash / Loading */
-    #splash{
-      min-height: 100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 24px;
-      text-align:center;
-    }
+    #splash{ min-height: 100vh; display:flex; align-items:center; justify-content:center; padding: 24px; text-align:center; }
     .splash-card{
-      width: min(520px, 92vw);
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding: 26px 22px;
+      width: min(520px, 92vw); border:1px solid var(--stroke); background: rgba(255,255,255,.03);
+      border-radius: 18px; box-shadow: var(--shadow); padding: 26px 22px;
     }
-    .splash-title{
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing:.9px;
-      text-transform: uppercase;
-      margin: 0 0 8px 0;
-    }
-    .splash-brand{
-      font-size: 15px;
-      font-weight: 850;
-      opacity: .92;
-      margin: 0 0 6px 0;
-    }
-    .splash-loc{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 750;
-      margin: 0 0 18px 0;
-    }
-    .splash-loading{
-      color: var(--muted);
-      font-weight: 750;
-      letter-spacing:.2px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-    .spinner{
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,.20);
-      border-top-color: rgba(77,163,255,.9);
-      animation: spin .9s linear infinite;
-    }
+    .splash-title{ font-size: 22px; font-weight: 900; letter-spacing:.9px; text-transform: uppercase; margin: 0 0 8px 0; }
+    .splash-brand{ font-size: 15px; font-weight: 850; opacity: .92; margin: 0 0 6px 0; }
+    .splash-loc{ font-size: 12px; color: var(--muted); font-weight: 750; margin: 0 0 18px 0; }
+    .splash-loading{ color: var(--muted); font-weight: 750; letter-spacing:.2px; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .spinner{ width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.20); border-top-color: rgba(77,163,255,.9); animation: spin .9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     #app{ display:none; }
@@ -330,7 +132,6 @@
 
 <body>
 
-  <!-- Splash / Loading -->
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
@@ -344,16 +145,13 @@
     </div>
   </div>
 
-  <!-- App (Dashboard) -->
   <div id="app">
     <div class="wrap">
-
       <header>
         <div class="title">
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
 
-          <!-- REAL LOCATION -->
           <div class="location">
             <span id="locText">Point Location : waiting GPS...</span>
             <a id="locLink" href="#" target="_blank" rel="noopener" style="display:none;">Open Maps</a>
@@ -368,6 +166,11 @@
             <span class="pill">
               <span id="ledPzem" class="led"></span>
               <span id="pzemText">PZEM: UNKNOWN</span>
+            </span>
+
+            <span class="pill">
+              <span class="small-muted">UPTIME</span>
+              <span id="uptimeText">--</span>
             </span>
 
             <span class="pill">
@@ -393,39 +196,32 @@
 
       <div class="grid kpi-grid">
         <div id="cardV" class="card">
-          <div class="kpi-top">
-            <div class="kpi-label">⚡ AC Voltage</div>
-          </div>
+          <div class="kpi-top"><div class="kpi-label">⚡ AC Voltage</div></div>
           <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
           <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
           <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
           <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
           <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
           <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
           <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
           <div class="kpi-foot"><span class="small-muted">Grid</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
           <div class="kpi-value"><span id="PF">--</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
@@ -433,26 +229,17 @@
 
       <div class="grid charts" style="margin-top:12px;">
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📈 Voltage (last window)</div>
-            <div class="small-muted" id="chartHintV">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📈 Voltage (last window)</div><div class="small-muted" id="chartHintV">--</div></div>
           <canvas id="chartV"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📉 Power (last window)</div>
-            <div class="small-muted" id="chartHintW">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📉 Power (last window)</div><div class="small-muted" id="chartHintW">--</div></div>
           <canvas id="chartW"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📊 Current (last window)</div>
-            <div class="small-muted" id="chartHintA">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📊 Current (last window)</div><div class="small-muted" id="chartHintA">--</div></div>
           <canvas id="chartA"></canvas>
         </div>
       </div>
@@ -461,30 +248,21 @@
         Source: MQTT over WebSocket Secure (HiveMQ Cloud) • Topics:
         <b id="tData"></b> + <b id="tStatus"></b>
       </div>
-
     </div>
   </div>
 
 <script>
   // ===== MQTT SETTINGS (HiveMQ Cloud WSS) =====
   const WS_URL = "wss://aea4e9b5cb1943fb9e170f5d0d9caa1b.s1.eu.hivemq.cloud:8884/mqtt";
-
-  // ===== TOPICS (sesuai firmware ESP) =====
-  // Kalau kamu ubah via CONFIG USB, tinggal ganti 2 baris ini.
   const TOPIC_DATA   = "FADHIL/FATHOM/DATA";
   const TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
-
-  // ===== AUTH (sesuai firmware ESP) =====
   const MQTT_USER = "fathomtroops";
   const MQTT_PASS = "Mule1234";
 
-  // tampilkan topics di footer
   document.getElementById("tData").innerText = TOPIC_DATA;
   document.getElementById("tStatus").innerText = TOPIC_STATUS;
 
-  // ===== UI SETTINGS =====
-  const V_LOW = 210;
-  const V_HIGH = 245;
+  const V_LOW = 210, V_HIGH = 245;
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
 
@@ -501,9 +279,18 @@
     if(el) el.innerText = txt;
   }
 
-  // ===== REAL LOCATION (from STATUS: LOC:https://maps.google.com/?q=lat,lon) =====
+  function setLastUpdateNow(){
+    const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
+    document.getElementById("lastUpdate").innerText = time;
+  }
+
+  // ===== Persist keys (LAST DATA) =====
+  const LS_LOC = "sem_last_loc_url";
+  const LS_UP  = "sem_last_uptime";
+
+  // ===== REAL LOCATION (retained + localStorage fallback) =====
   let lastLocUrl = "";
-  function setLocationFromUrl(url){
+  function setLocationFromUrl(url, {save=true} = {}){
     if(!url || typeof url !== "string") return;
     if(!url.startsWith("https://maps.google.com/?q=")) return;
     if(url === lastLocUrl) return;
@@ -523,30 +310,36 @@
       a.style.display = "inline";
       a.innerText = "Open Maps";
     }
+
+    if(save){
+      try{ localStorage.setItem(LS_LOC, url); }catch(e){}
+    }
   }
 
-  // ===== BUFFERS =====
-  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
-  const MAX_POINTS_LIVE = 120;
-  let rangeMode = "live";
-  const buf = { V: [], W: [], A: [] }; // {x,y}
-
-  function trimBuffer(maxPoints){
-    while (buf.V.length > maxPoints) buf.V.shift();
-    while (buf.W.length > maxPoints) buf.W.shift();
-    while (buf.A.length > maxPoints) buf.A.shift();
+  // ===== UPTIME (retained + localStorage fallback) =====
+  function setUptimeText(txt, {save=true} = {}){
+    const el = document.getElementById("uptimeText");
+    if(!el) return;
+    const v = (txt && txt.length) ? txt : "--";
+    el.innerText = v;
+    if(save){
+      try{ localStorage.setItem(LS_UP, v); }catch(e){}
+    }
   }
 
-  function setLastUpdateNow(){
-    const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
-    document.getElementById("lastUpdate").innerText = time;
-  }
+  // preload last known values (instant saat dashboard dibuka)
+  try{
+    const lastLoc = localStorage.getItem(LS_LOC);
+    if(lastLoc) setLocationFromUrl(lastLoc, {save:false});
+    const lastUp = localStorage.getItem(LS_UP);
+    if(lastUp) setUptimeText(lastUp, {save:false});
+  }catch(e){}
 
+  // ===== LED/RSSI helpers =====
   function setLed(el, state){
     el.classList.remove("ok","warn","bad");
     if(state) el.classList.add(state);
   }
-
   function setRSSI(rssi){
     const bars = document.querySelectorAll("#rssiBars .bar");
     bars.forEach(b => b.classList.remove("on","warn","bad"));
@@ -563,15 +356,9 @@
     if (rssi < 10) cls = "bad";
     else if (rssi < 15) cls = "warn";
 
-    for(let i=0;i<level;i++){
-      bars[i].classList.add(cls);
-    }
+    for(let i=0;i<level;i++) bars[i].classList.add(cls);
   }
-
-  function setText(id, val){
-    document.getElementById(id).innerText = val;
-  }
-
+  function setText(id, val){ document.getElementById(id).innerText = val; }
   function setVoltageAlarm(v){
     const card = document.getElementById("cardV");
     card.classList.remove("alarm");
@@ -579,6 +366,32 @@
     if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
   }
 
+  function setDeviceState(state){
+    const led = document.getElementById("ledDevice");
+    const txt = document.getElementById("deviceText");
+    if (state === "ONLINE"){ setLed(led, "ok"); txt.innerText = "DEVICE: ONLINE"; }
+    else if (state === "OFFLINE"){ setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE"; }
+    else { setLed(led, null); txt.innerText = "DEVICE: CONNECTING"; }
+  }
+
+  function setPzemState(state){
+    const led = document.getElementById("ledPzem");
+    const txt = document.getElementById("pzemText");
+    if (state === "ON"){ setLed(led, "ok"); txt.innerText = "PZEM: ON"; }
+    else if (state === "OFF"){
+      setLed(led, "warn"); txt.innerText = "PZEM: OFF";
+      setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
+      setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
+      setVoltageAlarm(0);
+    } else { setLed(led, null); txt.innerText = "PZEM: UNKNOWN"; }
+  }
+
+  setDeviceState("CONNECTING");
+  setPzemState("UNKNOWN");
+  setRSSI(null);
+  if(!document.getElementById("uptimeText").innerText) setUptimeText("--", {save:false});
+
+  // ===== Parse payloads =====
   function parseDataPayload(data){
     if (!data) return null;
     if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
@@ -604,11 +417,10 @@
     if (data === "DEVICE_ONLINE") return { type:"device", device:"ONLINE" };
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
-    // LOC:https://maps.google.com/?q=...
-    if (data.startsWith("LOC:")){
-      const url = data.slice(4).trim();
-      return { type:"loc", url };
-    }
+    if (data.startsWith("UPTIME:")) return { type:"uptime", text: data.slice(7).trim() };
+    if (data.startsWith("BOOT:UPTIME:")) return { type:"uptime", text: data.slice(12).trim() };
+
+    if (data.startsWith("LOC:")) return { type:"loc", url: data.slice(4).trim() };
 
     if (data.startsWith("PZEM:")){
       const s = data.split(":")[1];
@@ -620,9 +432,19 @@
       const rssi = m ? parseInt(m[1], 10) : null;
       return { type:"net", rssi };
     }
-
-    // UPTIME:... / BOOT:... / CFG:SAVED / dll -> tidak dipakai UI, aman diabaikan
     return null;
+  }
+
+  // ===== Buffers + Charts =====
+  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
+  const MAX_POINTS_LIVE = 120;
+  let rangeMode = "live";
+  const buf = { V: [], W: [], A: [] };
+
+  function trimBuffer(maxPoints){
+    while (buf.V.length > maxPoints) buf.V.shift();
+    while (buf.W.length > maxPoints) buf.W.shift();
+    while (buf.A.length > maxPoints) buf.A.shift();
   }
 
   function xTicks(){
@@ -636,26 +458,22 @@
   }
   function yTicks(){ return { ticks: { maxTicksLimit: 6 } }; }
 
-  // ===== Charts =====
   const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
-
   const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
-
   const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"A", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
 
-  // ===== Redraw =====
   let lastRedraw = 0;
   function redrawCharts(){
     const now = Date.now();
@@ -679,10 +497,8 @@
     document.getElementById("chartHintA").innerText = `${aData.length} points`;
   }
 
-  // ===== Buttons =====
   const btnLive = document.getElementById("btnLive");
   const btn1h = document.getElementById("btn1h");
-
   function setMode(mode){
     rangeMode = mode;
     btnLive.classList.toggle("active", mode === "live");
@@ -692,46 +508,7 @@
   btnLive.addEventListener("click", () => setMode("live"));
   btn1h.addEventListener("click", () => setMode("1h"));
 
-  // ===== State UI =====
-  function setDeviceState(state){
-    const led = document.getElementById("ledDevice");
-    const txt = document.getElementById("deviceText");
-    if (state === "ONLINE"){
-      setLed(led, "ok");
-      txt.innerText = "DEVICE: ONLINE";
-    } else if (state === "OFFLINE"){
-      setLed(led, "bad");
-      txt.innerText = "DEVICE: OFFLINE";
-    } else {
-      setLed(led, null);
-      txt.innerText = "DEVICE: CONNECTING";
-    }
-  }
-
-  function setPzemState(state){
-    const led = document.getElementById("ledPzem");
-    const txt = document.getElementById("pzemText");
-    if (state === "ON"){
-      setLed(led, "ok");
-      txt.innerText = "PZEM: ON";
-    } else if (state === "OFF"){
-      setLed(led, "warn");
-      txt.innerText = "PZEM: OFF";
-      setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
-      setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
-      setVoltageAlarm(0);
-    } else {
-      setLed(led, null);
-      txt.innerText = "PZEM: UNKNOWN";
-    }
-  }
-
-  // init (app masih hidden)
-  setDeviceState("CONNECTING");
-  setPzemState("UNKNOWN");
-  setRSSI(null);
-
-  // ===== MQTT (HiveMQ WSS + Auth) =====
+  // ===== MQTT connect =====
   setLoadingText("Connecting HiveMQ broker...");
   const client = mqtt.connect(WS_URL, {
     username: MQTT_USER,
@@ -769,14 +546,14 @@
       const s = parseStatusPayload(data);
       if (!s) return;
 
-      // begitu ada STATUS valid, tampil dashboard
       showDashboard();
       setLastUpdateNow();
 
       if (s.type === "device") setDeviceState(s.device);
       if (s.type === "pzem") setPzemState(s.pzem);
       if (s.type === "net") setRSSI(s.rssi);
-      if (s.type === "loc") setLocationFromUrl(s.url);
+      if (s.type === "loc") setLocationFromUrl(s.url);     // save last
+      if (s.type === "uptime") setUptimeText(s.text);       // save last
       return;
     }
 
