@@ -9,19 +9,10 @@
 
   <style>
     :root{
-      --bg:#0b0f14;
-      --stroke:#1d2a3a;
-      --text:#e7eef7;
-      --muted:#9fb0c3;
-
-      --ok:#24d18a;
-      --warn:#f7c948;
-      --bad:#ff4d4d;
-
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
+      --bg:#0b0f14; --stroke:#1d2a3a; --text:#e7eef7; --muted:#9fb0c3;
+      --ok:#24d18a; --warn:#f7c948; --bad:#ff4d4d;
+      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius: 16px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -32,181 +23,84 @@
       color:var(--text);
       overflow-x:hidden;
     }
-
     .wrap{ max-width: 1200px; margin: 0 auto; padding: 14px; }
-
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding: 6px 2px 14px 2px;
-    }
-
+    header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding: 6px 2px 14px 2px; }
     .title{ display:flex; flex-direction:column; gap:2px; }
-    .title h1{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:.6px;
-      font-weight: 850;
-      text-transform: uppercase;
-      line-height: 1.05;
-    }
-    .title .brand{
-      margin:0;
-      margin-top:-2px;
-      color: var(--text);
-      font-size: 14px;
-      letter-spacing:.35px;
-      font-weight: 800;
-      opacity: .92;
-    }
-    .title .location{
-      margin:0;
-      margin-top:-2px;
+    .title h1{ margin:0; font-size: 18px; letter-spacing:.6px; font-weight: 850; text-transform: uppercase; line-height: 1.05; }
+    .title .brand{ margin:0; margin-top:-2px; color: var(--text); font-size: 14px; letter-spacing:.35px; font-weight: 800; opacity: .92; }
+
+    /* LOCATION as LINK (opsi A) */
+    .title .location a{
+      display:inline-block;
       color: var(--muted);
       font-size: 12px;
       letter-spacing:.25px;
-      font-weight: 700;
-      display:flex;
-      gap:6px;
-      align-items:center;
-      flex-wrap:wrap;
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(159,176,195,.35);
+      padding-bottom: 1px;
     }
-    .title .location a{
-      color: rgba(77,163,255,.95);
-      text-decoration:none;
-      font-weight:800;
-      border-bottom: 1px dashed rgba(77,163,255,.55);
-    }
+    .title .location a:hover{ color: var(--text); border-bottom-color: rgba(231,238,247,.5); }
 
-    .subtitle{
-      color:var(--muted);
-      font-size:12px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-
+    .subtitle{ color:var(--muted); font-size:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 10px; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius:999px;
-      box-shadow: var(--shadow);
-      white-space:nowrap;
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
+      border:1px solid var(--stroke); background: rgba(255,255,255,.03);
+      border-radius:999px; box-shadow: var(--shadow); white-space:nowrap;
     }
-
-    .led{
-      width:10px;height:10px;border-radius:50%;
-      background: #556;
-      box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
-    }
+    .led{ width:10px;height:10px;border-radius:50%; background: #556; box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset; }
     .led.ok{ background: var(--ok); box-shadow: 0 0 12px rgba(36,209,138,.45); }
     .led.warn{ background: var(--warn); box-shadow: 0 0 12px rgba(247,201,72,.35); }
     .led.bad{ background: var(--bad); box-shadow: 0 0 12px rgba(255,77,77,.35); }
 
     .rssi{ display:inline-flex; gap:3px; align-items:flex-end; height:12px; }
     .bar{ width:4px; background: rgba(159,176,195,.35); border-radius:2px; }
-    .bar.on{ background: var(--ok); }
-    .bar.warn{ background: var(--warn); }
-    .bar.bad{ background: var(--bad); }
-    .bar:nth-child(1){ height:4px; }
-    .bar:nth-child(2){ height:7px; }
-    .bar:nth-child(3){ height:10px; }
-    .bar:nth-child(4){ height:12px; }
+    .bar.on{ background: var(--ok); } .bar.warn{ background: var(--warn); } .bar.bad{ background: var(--bad); }
+    .bar:nth-child(1){ height:4px; } .bar:nth-child(2){ height:7px; } .bar:nth-child(3){ height:10px; } .bar:nth-child(4){ height:12px; }
 
     .grid{ display:grid; gap:12px; }
     .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
-
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
+      border:1px solid var(--stroke); border-radius: var(--radius); padding: 14px;
+      box-shadow: var(--shadow); position:relative; overflow:hidden;
     }
     .card:before{
-      content:"";
-      position:absolute;
-      inset:-40px -80px auto auto;
-      width:180px;height:180px;
+      content:""; position:absolute; inset:-40px -80px auto auto; width:180px;height:180px;
       background: radial-gradient(circle, rgba(77,163,255,.18), transparent 60%);
-      transform: rotate(18deg);
-      pointer-events:none;
+      transform: rotate(18deg); pointer-events:none;
     }
-
     .kpi-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
-    .kpi-label{
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing:.25px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      text-transform: uppercase;
-      font-weight: 750;
-    }
+    .kpi-label{ color: var(--muted); font-size: 12px; letter-spacing:.25px; display:flex; align-items:center; gap:8px; text-transform: uppercase; font-weight: 750; }
     .kpi-value{ font-size: 28px; font-weight: 900; letter-spacing:.3px; line-height:1.05; }
     .kpi-unit{ color: var(--muted); font-size: 12px; margin-left: 6px; font-weight: 750; }
     .kpi-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 8px; color: var(--muted); font-size: 12px; }
-
-    .alarm{
-      border-color: rgba(255,77,77,.7) !important;
-      box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important;
-    }
+    .alarm{ border-color: rgba(255,77,77,.7) !important; box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important; }
     .alarm .kpi-value{ color: var(--bad); }
 
     .charts{ grid-template-columns: 1fr; }
     .chart-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
-    .chart-title{
-      font-size: 13px;
-      letter-spacing:.25px;
-      color: var(--muted);
-      text-transform: uppercase;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight: 800;
-    }
+    .chart-title{ font-size: 13px; letter-spacing:.25px; color: var(--muted); text-transform: uppercase; display:flex; align-items:center; gap:8px; font-weight: 800; }
 
     .seg{ display:flex; gap:6px; flex-wrap:wrap; }
     .seg button{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      padding: 7px 10px;
-      border-radius: 10px;
-      cursor:pointer;
-      font-weight: 750;
-      font-size: 12px;
+      border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text);
+      padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 750; font-size: 12px;
     }
-    .seg button.active{
-      border-color: rgba(77,163,255,.55);
-      box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset;
-    }
+    .seg button.active{ border-color: rgba(77,163,255,.55); box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset; }
 
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
-      .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
+      .kpi-grid{ grid-template-columns: repeat(7, 1fr); }
       .charts{ grid-template-columns: 1fr 1fr 1fr; }
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
       .title .brand{ font-size: 15px; }
     }
-
     @media (max-width: 360px){
       .kpi-value{ font-size: 24px; }
       .title h1{ font-size: 16px; }
     }
-
     .small-muted{ color: var(--muted); font-size: 12px; }
 
     .card.chart { height: 420px; }
@@ -216,15 +110,8 @@
       .card.chart canvas { height: 240px !important; }
     }
 
-    /* Splash / Loading */
-    #splash{
-      min-height: 100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 24px;
-      text-align:center;
-    }
+    /* Splash */
+    #splash{ min-height: 100vh; display:flex; align-items:center; justify-content:center; padding: 24px; text-align:center; }
     .splash-card{
       width: min(520px, 92vw);
       border:1px solid var(--stroke);
@@ -233,42 +120,11 @@
       box-shadow: var(--shadow);
       padding: 26px 22px;
     }
-    .splash-title{
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing:.9px;
-      text-transform: uppercase;
-      margin: 0 0 8px 0;
-    }
-    .splash-brand{
-      font-size: 15px;
-      font-weight: 850;
-      opacity: .92;
-      margin: 0 0 6px 0;
-    }
-    .splash-loc{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 750;
-      margin: 0 0 18px 0;
-    }
-    .splash-loading{
-      color: var(--muted);
-      font-weight: 750;
-      letter-spacing:.2px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-    .spinner{
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,.20);
-      border-top-color: rgba(77,163,255,.9);
-      animation: spin .9s linear infinite;
-    }
+    .splash-title{ font-size: 22px; font-weight: 900; letter-spacing:.9px; text-transform: uppercase; margin: 0 0 8px 0; }
+    .splash-brand{ font-size: 15px; font-weight: 850; opacity: .92; margin: 0 0 6px 0; }
+    .splash-loc{ font-size: 12px; color: var(--muted); font-weight: 750; margin: 0 0 18px 0; }
+    .splash-loading{ color: var(--muted); font-weight: 750; letter-spacing:.2px; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .spinner{ width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.20); border-top-color: rgba(77,163,255,.9); animation: spin .9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     #app{ display:none; }
@@ -276,13 +132,12 @@
 </head>
 
 <body>
-
+  <!-- Splash -->
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
       <div class="splash-brand">by MahaKaryaTeknologi</div>
-      <div class="splash-loc" id="splashLoc">Point Location : waiting GPS...</div>
-
+      <div class="splash-loc" id="splashLoc">Point Location : --</div>
       <div class="splash-loading">
         <span class="spinner"></span>
         <span id="loadingText">Loading data...</span>
@@ -290,17 +145,17 @@
     </div>
   </div>
 
+  <!-- App -->
   <div id="app">
     <div class="wrap">
-
       <header>
         <div class="title">
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
 
+          <!-- opsi A: location dinamis dari LOC -->
           <div class="location">
-            <span id="locText">Point Location : waiting GPS...</span>
-            <a id="locLink" href="#" target="_blank" rel="noopener" style="display:none;">Open Maps</a>
+            <a id="locLink" href="#" target="_blank" rel="noopener">Point Location : --</a>
           </div>
 
           <div class="subtitle">
@@ -315,16 +170,16 @@
             </span>
 
             <span class="pill">
-              <span class="small-muted">UPTIME</span>
-              <span id="uptimeText">--</span>
-            </span>
-
-            <span class="pill">
               <span class="small-muted">RSSI</span>
               <span id="rssiBars" class="rssi" aria-label="RSSI">
                 <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
               </span>
               <span id="rssiText" class="small-muted">--</span>
+            </span>
+
+            <span class="pill">
+              <span class="small-muted">UPTIME</span>
+              <span id="uptimeText">--</span>
             </span>
 
             <span class="pill">
@@ -342,87 +197,108 @@
 
       <div class="grid kpi-grid">
         <div id="cardV" class="card">
-          <div class="kpi-top"><div class="kpi-label">⚡ AC Voltage</div></div>
+          <div class="kpi-top">
+            <div class="kpi-label">⚡ AC Voltage</div>
+          </div>
           <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
-          <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
+          <div class="kpi-foot">
+            <span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span>
+          </div>
         </div>
 
-        <div class="card"><div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
           <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card"><div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
           <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card"><div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
           <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
           <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
         </div>
 
-        <div class="card"><div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
           <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
           <div class="kpi-foot"><span class="small-muted">Grid</span></div>
         </div>
 
-        <div class="card"><div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
           <div class="kpi-value"><span id="PF">--</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
+        </div>
+
+        <div class="card">
+          <div class="kpi-top"><div class="kpi-label">🛰️ GPS</div></div>
+          <div class="kpi-value" style="font-size:16px;font-weight:900;">
+            <span id="gpsText">--</span>
+          </div>
+          <div class="kpi-foot"><span class="small-muted">from STATUS: LOC:...</span></div>
         </div>
       </div>
 
       <div class="grid charts" style="margin-top:12px;">
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📈 Voltage (last window)</div><div class="small-muted" id="chartHintV">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📈 Voltage (last window)</div>
+            <div class="small-muted" id="chartHintV">--</div>
+          </div>
           <canvas id="chartV"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📉 Power (last window)</div><div class="small-muted" id="chartHintW">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📉 Power (last window)</div>
+            <div class="small-muted" id="chartHintW">--</div>
+          </div>
           <canvas id="chartW"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📊 Current (last window)</div><div class="small-muted" id="chartHintA">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📊 Current (last window)</div>
+            <div class="small-muted" id="chartHintA">--</div>
+          </div>
           <canvas id="chartA"></canvas>
         </div>
       </div>
 
       <div style="margin:14px 2px 4px 2px;" class="small-muted">
-        Source: MQTT over WebSocket Secure (HiveMQ Cloud) • Topics:
-        <b id="tData"></b> + <b id="tStatus"></b>
+        Source: MQTT over WebSocket (EMQX) • Topics:
+        <b id="topicDataLabel">-</b> + <b id="topicStatusLabel">-</b>
       </div>
-
     </div>
   </div>
 
 <script>
-  // ===== MQTT SETTINGS (HiveMQ Cloud WSS) =====
-  const WS_URL = "wss://aea4e9b5cb1943fb9e170f5d0d9caa1b.s1.eu.hivemq.cloud:8884/mqtt";
+  // ===== Broker WS (tetap EMQX) =====
+  const WS_URL = "wss://broker.emqx.io:8084/mqtt";
 
-  // ===== TOPICS (sesuai firmware ESP) =====
-  const TOPIC_DATA   = "FADHIL/FATHOM/DATA";
-  const TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
+  // ===== Default topics (sesuai firmware kamu) =====
+  const DEFAULT_TOPIC_DATA   = "FADHIL/FATHOM/DATA";
+  const DEFAULT_TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
 
-  // ✅ SUBTOPIC RETAINED (agar saat dashboard dibuka telat, langsung dapat data terakhir)
-  const TOPIC_STATUS_ALL = TOPIC_STATUS + "/#";
-  const TOPIC_STATUS_LOC = TOPIC_STATUS + "/LOC";
-  const TOPIC_STATUS_UP  = TOPIC_STATUS + "/UPTIME";
+  // ===== Optional override via URL: ?data=...&status=... =====
+  const qs = new URLSearchParams(location.search);
+  const TOPIC_DATA   = qs.get("data")   || DEFAULT_TOPIC_DATA;
+  const TOPIC_STATUS = qs.get("status") || DEFAULT_TOPIC_STATUS;
 
-  // ===== AUTH (sesuai firmware ESP) =====
-  const MQTT_USER = "fathomtroops";
-  const MQTT_PASS = "Mule1234";
-
-  document.getElementById("tData").innerText = TOPIC_DATA;
-  document.getElementById("tStatus").innerText = TOPIC_STATUS + " + " + TOPIC_STATUS_ALL;
-
-  // ===== UI SETTINGS =====
+  // ===== UI Settings =====
   const V_LOW = 210;
   const V_HIGH = 245;
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
+
+  document.getElementById("topicDataLabel").innerText = TOPIC_DATA;
+  document.getElementById("topicStatusLabel").innerText = TOPIC_STATUS;
 
   // ===== Splash control =====
   let appShown = false;
@@ -437,64 +313,58 @@
     if(el) el.innerText = txt;
   }
 
-  // ===== Location from retained topic =====
-  let lastLocUrl = "";
-  function setLocationFromUrl(url){
-    if(!url || typeof url !== "string") return;
-    if(!url.startsWith("https://maps.google.com/?q=")) return;
-    if(url === lastLocUrl) return;
-    lastLocUrl = url;
+  // ===== Local cache (agar LOC & UPTIME tetap muncul walau belum ada retain) =====
+  const LS_LOC_URL = "sem_last_loc_url";
+  const LS_LOC_TXT = "sem_last_loc_txt";
+  const LS_UPTIME  = "sem_last_uptime";
 
-    const q = url.split("?q=")[1] || "";
-    const locText = `Point Location : ${q}`;
+  function applyCachedLocUptime(){
+    const locUrl = localStorage.getItem(LS_LOC_URL) || "";
+    const locTxt = localStorage.getItem(LS_LOC_TXT) || "Point Location : --";
+    const upTxt  = localStorage.getItem(LS_UPTIME)  || "--";
 
-    const el1 = document.getElementById("locText");
-    const el2 = document.getElementById("splashLoc");
-    if(el1) el1.innerText = locText;
-    if(el2) el2.innerText = locText;
+    // header location
+    const locLink = document.getElementById("locLink");
+    const splashLoc = document.getElementById("splashLoc");
+    const gpsText = document.getElementById("gpsText");
 
-    const a = document.getElementById("locLink");
-    if(a){
-      a.href = url;
-      a.style.display = "inline";
-      a.innerText = "Open Maps";
+    splashLoc.innerText = locTxt;
+    locLink.innerText = locTxt;
+
+    if (locUrl && locUrl.startsWith("http")) {
+      locLink.href = locUrl;
+      gpsText.innerText = "READY";
+    } else {
+      locLink.href = "#";
+      gpsText.innerText = "--";
     }
-  }
 
-  // ===== Uptime =====
-  function setUptimeText(txt){
-    const el = document.getElementById("uptimeText");
-    if(!el) return;
-    el.innerText = txt && txt.length ? txt : "--";
+    document.getElementById("uptimeText").innerText = upTxt;
   }
-  setUptimeText("--");
+  applyCachedLocUptime();
 
-  // ===== BUFFERS =====
+  // ===== Helpers =====
   const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
   const MAX_POINTS_LIVE = 120;
   let rangeMode = "live";
-  const buf = { V: [], W: [], A: [] };
+  const buf = { V: [], W: [], A: [] }; // {x,y}
 
   function trimBuffer(maxPoints){
     while (buf.V.length > maxPoints) buf.V.shift();
     while (buf.W.length > maxPoints) buf.W.shift();
     while (buf.A.length > maxPoints) buf.A.shift();
   }
-
   function setLastUpdateNow(){
     const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
     document.getElementById("lastUpdate").innerText = time;
   }
-
   function setLed(el, state){
     el.classList.remove("ok","warn","bad");
     if(state) el.classList.add(state);
   }
-
   function setRSSI(rssi){
     const bars = document.querySelectorAll("#rssiBars .bar");
     bars.forEach(b => b.classList.remove("on","warn","bad"));
-
     document.getElementById("rssiText").innerText = (rssi === null || isNaN(rssi)) ? "--" : rssi;
     if (rssi === null || isNaN(rssi) || rssi === 99) return;
 
@@ -509,9 +379,7 @@
 
     for(let i=0;i<level;i++) bars[i].classList.add(cls);
   }
-
   function setText(id, val){ document.getElementById(id).innerText = val; }
-
   function setVoltageAlarm(v){
     const card = document.getElementById("cardV");
     card.classList.remove("alarm");
@@ -519,8 +387,12 @@
     if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
   }
 
+  // ===== Parse DATA payload (firmware) =====
+  // - STATUS:PZEM_OFF / STATUS:PZEM_ON
+  // - V..,A..,W..,kWh..,Hz..,PF..
   function parseDataPayload(data){
     if (!data) return null;
+
     if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
     if (data.startsWith("STATUS:PZEM_ON"))  return { type:"pzemEvent", pzem:"ON"  };
 
@@ -538,32 +410,45 @@
     return null;
   }
 
-  // Status payload lama (kalau masih dipakai)
+  // ===== Parse STATUS payload (firmware) =====
+  // DEVICE_ONLINE / DEVICE_OFFLINE
+  // PZEM:ON / PZEM:OFF / PZEM:BOOT
+  // NET:OK,GPRS:OK,RSSI:xx
+  // UPTIME:xxhxxm  (HANYA ini yang ditampilkan)
+  // LOC:https://maps.google.com/?q=...
   function parseStatusPayload(data){
     if (!data) return null;
 
-    if (data === "DEVICE_ONLINE") return { type:"device", device:"ONLINE" };
+    if (data === "DEVICE_ONLINE")  return { type:"device", device:"ONLINE" };
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
-    if (data.startsWith("UPTIME:")) return { type:"uptime", text: data.slice(7).trim() };
-    if (data.startsWith("BOOT:UPTIME:")) return { type:"uptime", text: data.slice(12).trim() };
-
-    if (data.startsWith("LOC:")) return { type:"loc", url: data.slice(4).trim() };
-
-    if (data.startsWith("PZEM:")){
-      const s = data.split(":")[1];
-      return { type:"pzem", pzem: (s === "OFF" ? "OFF" : "ON") };
+    if (data.startsWith("PZEM:")) {
+      const s = data.split(":")[1] || "";
+      if (s === "ON") return { type:"pzem", pzem:"ON" };
+      if (s === "OFF") return { type:"pzem", pzem:"OFF" };
+      if (s === "BOOT") return { type:"pzem", pzem:"BOOT" };
+      return { type:"pzem", pzem:"UNKNOWN" };
     }
 
-    if (data.startsWith("NET:")){
+    if (data.startsWith("NET:")) {
       const m = data.match(/RSSI:(\d+)/);
       const rssi = m ? parseInt(m[1], 10) : null;
       return { type:"net", rssi };
     }
 
+    if (data.startsWith("UPTIME:")) {
+      return { type:"uptime", uptime: data.replace("UPTIME:", "").trim() };
+    }
+
+    if (data.startsWith("LOC:")) {
+      const url = data.slice(4).trim();
+      return { type:"loc", url };
+    }
+
     return null;
   }
 
+  // ===== Charts =====
   function xTicks(){
     return {
       type: "linear",
@@ -575,21 +460,34 @@
   }
   function yTicks(){ return { ticks: { maxTicksLimit: 6 } }; }
 
-  // ===== Charts =====
   const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
+
   const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
+
   const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"A", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
 
   let lastRedraw = 0;
@@ -599,7 +497,6 @@
     lastRedraw = now;
 
     const maxPoints = (rangeMode === "1h") ? MAX_POINTS_1H : MAX_POINTS_LIVE;
-
     const vData = buf.V.slice(Math.max(0, buf.V.length - maxPoints));
     const wData = buf.W.slice(Math.max(0, buf.W.length - maxPoints));
     const aData = buf.A.slice(Math.max(0, buf.A.length - maxPoints));
@@ -615,6 +512,7 @@
     document.getElementById("chartHintA").innerText = `${aData.length} points`;
   }
 
+  // ===== Buttons =====
   const btnLive = document.getElementById("btnLive");
   const btn1h = document.getElementById("btn1h");
   function setMode(mode){
@@ -630,94 +528,90 @@
   function setDeviceState(state){
     const led = document.getElementById("ledDevice");
     const txt = document.getElementById("deviceText");
-    if (state === "ONLINE"){ setLed(led, "ok");  txt.innerText = "DEVICE: ONLINE"; }
-    else if (state === "OFFLINE"){ setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE"; }
-    else { setLed(led, null); txt.innerText = "DEVICE: CONNECTING"; }
+
+    if (state === "ONLINE"){
+      setLed(led, "ok"); txt.innerText = "DEVICE: ONLINE";
+    } else if (state === "OFFLINE"){
+      setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE";
+    } else {
+      setLed(led, null); txt.innerText = "DEVICE: CONNECTING";
+    }
   }
 
   function setPzemState(state){
     const led = document.getElementById("ledPzem");
     const txt = document.getElementById("pzemText");
+
     if (state === "ON"){
       setLed(led, "ok"); txt.innerText = "PZEM: ON";
     } else if (state === "OFF"){
       setLed(led, "warn"); txt.innerText = "PZEM: OFF";
+      // UI only set 0
       setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
       setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
+    } else if (state === "BOOT"){
+      setLed(led, "warn"); txt.innerText = "PZEM: BOOT";
     } else {
       setLed(led, null); txt.innerText = "PZEM: UNKNOWN";
     }
   }
 
-  // init
+  function setLocUrl(url){
+    const locLink = document.getElementById("locLink");
+    const splashLoc = document.getElementById("splashLoc");
+    const gpsText = document.getElementById("gpsText");
+
+    if (url && url.startsWith("http")) {
+      const txt = "Point Location : (click to open maps)";
+      locLink.href = url;
+      locLink.innerText = txt;
+      splashLoc.innerText = txt;
+      gpsText.innerText = "READY";
+
+      localStorage.setItem(LS_LOC_URL, url);
+      localStorage.setItem(LS_LOC_TXT, txt);
+    }
+  }
+
+  function setUptime(uptimeText){
+    const t = uptimeText && uptimeText.length ? uptimeText : "--";
+    document.getElementById("uptimeText").innerText = t;
+    localStorage.setItem(LS_UPTIME, t);
+  }
+
+  // init (app hidden)
   setDeviceState("CONNECTING");
   setPzemState("UNKNOWN");
   setRSSI(null);
 
-  // ===== MQTT (HiveMQ WSS + Auth) =====
-  setLoadingText("Connecting HiveMQ broker...");
-  const client = mqtt.connect(WS_URL, {
-    username: MQTT_USER,
-    password: MQTT_PASS,
-    clientId: "WEB_DASH_" + Math.random().toString(16).slice(2, 10),
-    clean: true,
-    reconnectPeriod: 2000,
-    connectTimeout: 15000
-  });
+  // ===== MQTT =====
+  setLoadingText("Connecting broker...");
+  const client = mqtt.connect(WS_URL);
 
   client.on("connect", () => {
-    setLoadingText("Subscribed, receiving retained...");
-    // ✅ penting: subscribe STATUS/# supaya LOC & UPTIME retained langsung masuk walau device sudah ON lama
-    client.subscribe([TOPIC_DATA, TOPIC_STATUS_ALL], { qos: 0 });
-  });
-
-  client.on("reconnect", () => {
-    setLoadingText("Reconnecting...");
-    setDeviceState("CONNECTING");
-  });
-
-  client.on("close", () => {
-    setLoadingText("Disconnected...");
-    setDeviceState("OFFLINE");
-  });
-
-  client.on("error", (err) => {
-    setLoadingText("Error: " + (err?.message || "unknown"));
+    setLoadingText("Subscribed, waiting messages...");
+    client.subscribe([TOPIC_DATA, TOPIC_STATUS]);
   });
 
   client.on("message", (topic, message) => {
     const data = message.toString();
     setLoadingText("Receiving...");
 
-    // ✅ STATUS bisa datang dari STATUS atau STATUS/LOC atau STATUS/UPTIME
-    if (topic === TOPIC_STATUS || topic.startsWith(TOPIC_STATUS + "/")) {
-
-      // handle retained by TOPIC (paling penting)
-      if (topic === TOPIC_STATUS_LOC) {
-        if (data.startsWith("LOC:")) setLocationFromUrl(data.slice(4).trim());
-        showDashboard(); setLastUpdateNow();
-        return;
-      }
-      if (topic === TOPIC_STATUS_UP) {
-        if (data.startsWith("UPTIME:")) setUptimeText(data.slice(7).trim());
-        else if (data.startsWith("BOOT:UPTIME:")) setUptimeText(data.slice(12).trim());
-        showDashboard(); setLastUpdateNow();
-        return;
-      }
-
-      // masih dukung payload lama di TOPIC_STATUS
+    if (topic === TOPIC_STATUS){
       const s = parseStatusPayload(data);
       if (!s) return;
 
+      // begitu ada STATUS valid -> tampil dashboard
       showDashboard();
       setLastUpdateNow();
 
-      if (s.type === "device") setDeviceState(s.device);
-      if (s.type === "pzem") setPzemState(s.pzem);
-      if (s.type === "net") setRSSI(s.rssi);
-      if (s.type === "loc") setLocationFromUrl(s.url);
-      if (s.type === "uptime") setUptimeText(s.text);
+      if (s.type === "device")  setDeviceState(s.device);
+      if (s.type === "pzem")    setPzemState(s.pzem);
+      if (s.type === "net")     setRSSI(s.rssi);
+      if (s.type === "uptime")  setUptime(s.uptime);
+      if (s.type === "loc")     setLocUrl(s.url);
+
       return;
     }
 
@@ -725,17 +619,15 @@
       const d = parseDataPayload(data);
       if (!d) return;
 
+      showDashboard();
+      setLastUpdateNow();
+
       if (d.type === "pzemEvent"){
-        showDashboard();
-        setLastUpdateNow();
         setPzemState(d.pzem);
         return;
       }
 
       if (d.type === "data"){
-        showDashboard();
-        setLastUpdateNow();
-
         setText("V", d.V.toFixed(1));
         setText("A", (d.A ?? 0).toFixed(2));
         setText("W", (d.W ?? 0).toFixed(1));
@@ -744,6 +636,7 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
+        // kalau belum pernah dapat device status, minimal set ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
 
@@ -751,12 +644,16 @@
         buf.V.push({ x: t, y: d.V });
         buf.W.push({ x: t, y: d.W });
         buf.A.push({ x: t, y: (d.A ?? 0) });
-
         trimBuffer(MAX_POINTS_1H);
         redrawCharts();
       }
     }
   });
+
+  client.on("reconnect", () => setLoadingText("Reconnecting broker..."));
+  client.on("error", () => setLoadingText("MQTT error"));
+  client.on("close", () => setLoadingText("Connection closed"));
 </script>
+
 </body>
 </html>
