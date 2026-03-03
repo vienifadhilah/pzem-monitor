@@ -15,25 +15,26 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background: radial-gradient(1200px 600px at 20% -20%, rgba(77,163,255,.20), transparent 55%),
                   radial-gradient(1000px 600px at 110% 10%, rgba(36,209,138,.12), transparent 55%),
                   var(--bg);
-      color:var(--text); overflow-x:hidden;
+      color:var(--text);
+      overflow-x:hidden;
     }
     .wrap{ max-width: 1200px; margin: 0 auto; padding: 14px; }
+
     header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding: 6px 2px 14px 2px; }
     .title{ display:flex; flex-direction:column; gap:2px; }
-    .title h1{ margin:0; font-size: 18px; letter-spacing:.6px; font-weight: 850; text-transform: uppercase; line-height: 1.05; }
-    .title .brand{ margin:0; margin-top:-2px; color: var(--text); font-size: 14px; letter-spacing:.35px; font-weight: 800; opacity: .92; }
-
-    /* Location as link (opsi A) */
+    .title h1{ margin:0; font-size: 18px; letter-spacing:.6px; font-weight: 900; text-transform: uppercase; line-height: 1.05; }
+    .title .brand{ margin:0; margin-top:-2px; color: var(--text); font-size: 14px; letter-spacing:.35px; font-weight: 850; opacity: .92; }
     .title .location a{
       display:inline-block;
+      margin-top:-2px;
       color: var(--muted);
       font-size: 12px;
       letter-spacing:.25px;
-      font-weight: 800;
+      font-weight: 850;
       text-decoration: none;
       border-bottom: 1px dashed rgba(159,176,195,.35);
       padding-bottom: 1px;
@@ -54,45 +55,49 @@
 
     .grid{ display:grid; gap:12px; }
     .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
-
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-      border:1px solid var(--stroke); border-radius: var(--radius); padding: 14px;
-      box-shadow: var(--shadow); position:relative; overflow:hidden;
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
     .card:before{
-      content:""; position:absolute; inset:-40px -80px auto auto; width:180px;height:180px;
+      content:"";
+      position:absolute;
+      inset:-40px -80px auto auto;
+      width:180px;height:180px;
       background: radial-gradient(circle, rgba(77,163,255,.18), transparent 60%);
-      transform: rotate(18deg); pointer-events:none;
+      transform: rotate(18deg);
+      pointer-events:none;
     }
     .kpi-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
-    .kpi-label{ color: var(--muted); font-size: 12px; letter-spacing:.25px; display:flex; align-items:center; gap:8px; text-transform: uppercase; font-weight: 750; }
-    .kpi-value{ font-size: 28px; font-weight: 900; letter-spacing:.3px; line-height:1.05; }
-    .kpi-unit{ color: var(--muted); font-size: 12px; margin-left: 6px; font-weight: 750; }
+    .kpi-label{ color: var(--muted); font-size: 12px; letter-spacing:.25px; display:flex; align-items:center; gap:8px; text-transform: uppercase; font-weight: 800; }
+    .kpi-value{ font-size: 28px; font-weight: 950; letter-spacing:.3px; line-height:1.05; }
+    .kpi-unit{ color: var(--muted); font-size: 12px; margin-left: 6px; font-weight: 800; }
     .kpi-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 8px; color: var(--muted); font-size: 12px; }
     .alarm{ border-color: rgba(255,77,77,.7) !important; box-shadow: 0 0 0 1px rgba(255,77,77,.25) inset, var(--shadow) !important; }
     .alarm .kpi-value{ color: var(--bad); }
 
     .charts{ grid-template-columns: 1fr; }
     .chart-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
-    .chart-title{ font-size: 13px; letter-spacing:.25px; color: var(--muted); text-transform: uppercase; display:flex; align-items:center; gap:8px; font-weight: 800; }
+    .chart-title{ font-size: 13px; letter-spacing:.25px; color: var(--muted); text-transform: uppercase; display:flex; align-items:center; gap:8px; font-weight: 850; }
 
     .seg{ display:flex; gap:6px; flex-wrap:wrap; }
-    .seg button{ border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text); padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 750; font-size: 12px; }
+    .seg button{ border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text); padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 800; font-size: 12px; }
     .seg button.active{ border-color: rgba(77,163,255,.55); box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset; }
 
     @media (min-width: 1024px){
       .wrap{ max-width: 1400px; }
-      .kpi-grid{ grid-template-columns: repeat(7, 1fr); }
+      .kpi-grid{ grid-template-columns: repeat(6, 1fr); }
       .charts{ grid-template-columns: 1fr 1fr 1fr; }
       .kpi-value{ font-size: 30px; }
       .title h1{ font-size: 20px; }
       .title .brand{ font-size: 15px; }
     }
-    @media (max-width: 360px){
-      .kpi-value{ font-size: 24px; }
-      .title h1{ font-size: 16px; }
-    }
+
     .small-muted{ color: var(--muted); font-size: 12px; }
 
     .card.chart { height: 420px; }
@@ -102,8 +107,15 @@
       .card.chart canvas { height: 240px !important; }
     }
 
-    /* Splash */
-    #splash{ min-height: 100vh; display:flex; align-items:center; justify-content:center; padding: 24px; text-align:center; }
+    /* Splash / Loading */
+    #splash{
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+      text-align:center;
+    }
     .splash-card{
       width: min(520px, 92vw);
       border:1px solid var(--stroke);
@@ -112,10 +124,10 @@
       box-shadow: var(--shadow);
       padding: 26px 22px;
     }
-    .splash-title{ font-size: 22px; font-weight: 900; letter-spacing:.9px; text-transform: uppercase; margin: 0 0 8px 0; }
-    .splash-brand{ font-size: 15px; font-weight: 850; opacity: .92; margin: 0 0 6px 0; }
-    .splash-loc{ font-size: 12px; color: var(--muted); font-weight: 750; margin: 0 0 18px 0; }
-    .splash-loading{ color: var(--muted); font-weight: 750; letter-spacing:.2px; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .splash-title{ font-size: 22px; font-weight: 950; letter-spacing:.9px; text-transform: uppercase; margin: 0 0 8px 0; }
+    .splash-brand{ font-size: 15px; font-weight: 900; opacity: .92; margin: 0 0 6px 0; }
+    .splash-loc{ font-size: 12px; color: var(--muted); font-weight: 800; margin: 0 0 18px 0; }
+    .splash-loading{ color: var(--muted); font-weight: 850; letter-spacing:.2px; display:flex; align-items:center; justify-content:center; gap:10px; }
     .spinner{ width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.20); border-top-color: rgba(77,163,255,.9); animation: spin .9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -124,6 +136,7 @@
 </head>
 
 <body>
+  <!-- Splash -->
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
@@ -136,13 +149,13 @@
     </div>
   </div>
 
+  <!-- App -->
   <div id="app">
     <div class="wrap">
       <header>
         <div class="title">
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
-
           <div class="location">
             <a id="locLink" href="#" target="_blank" rel="noopener">Point Location : --</a>
           </div>
@@ -220,25 +233,30 @@
           <div class="kpi-value"><span id="PF">--</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
-
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🛰️ GPS</div></div>
-          <div class="kpi-value" style="font-size:16px;font-weight:900;"><span id="gpsText">--</span></div>
-          <div class="kpi-foot"><span class="small-muted">from STATUS: LOC:...</span></div>
-        </div>
       </div>
 
       <div class="grid charts" style="margin-top:12px;">
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📈 Voltage (last window)</div><div class="small-muted" id="chartHintV">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📈 Voltage</div>
+            <div class="small-muted" id="chartHintV">--</div>
+          </div>
           <canvas id="chartV"></canvas>
         </div>
+
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📉 Power (last window)</div><div class="small-muted" id="chartHintW">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📉 Power</div>
+            <div class="small-muted" id="chartHintW">--</div>
+          </div>
           <canvas id="chartW"></canvas>
         </div>
+
         <div class="card chart">
-          <div class="chart-head"><div class="chart-title">📊 Current (last window)</div><div class="small-muted" id="chartHintA">--</div></div>
+          <div class="chart-head">
+            <div class="chart-title">📊 Current</div>
+            <div class="small-muted" id="chartHintA">--</div>
+          </div>
           <canvas id="chartA"></canvas>
         </div>
       </div>
@@ -251,28 +269,30 @@
   </div>
 
 <script>
-  // ===== MQTT SETTINGS =====
+  // ===================== SETTINGS =====================
   const WS_URL = "wss://broker.emqx.io:8084/mqtt";
 
-  // ===== TOPICS (DEFAULT = firmware) =====
+  // Firmware default topics
   const DEFAULT_TOPIC_DATA   = "FADHIL/FATHOM/DATA";
   const DEFAULT_TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
 
-  // optional: override via URL ?data=...&status=...
+  // Override via URL (opsional):
+  // dashboard.html?data=FADHIL/FATHOM/DATA&status=FADHIL/FATHOM/STATUS
   const qs = new URLSearchParams(location.search);
   const TOPIC_DATA   = qs.get("data")   || DEFAULT_TOPIC_DATA;
   const TOPIC_STATUS = qs.get("status") || DEFAULT_TOPIC_STATUS;
 
-  document.getElementById("topicDataLabel").innerText = TOPIC_DATA;
-  document.getElementById("topicStatusLabel").innerText = TOPIC_STATUS;
-
-  // ===== UI SETTINGS =====
+  // Voltage alarm
   const V_LOW = 210;
   const V_HIGH = 245;
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
 
-  // ===== Splash control =====
+  // Labels
+  document.getElementById("topicDataLabel").innerText = TOPIC_DATA;
+  document.getElementById("topicStatusLabel").innerText = TOPIC_STATUS;
+
+  // ===================== SPLASH CONTROL =====================
   let appShown = false;
   function showDashboard(){
     if(appShown) return;
@@ -285,37 +305,29 @@
     if(el) el.innerText = txt;
   }
 
-  // ===== Cache (last known) =====
-  const LS_LOC_URL = "sem_last_loc_url";
-  const LS_LOC_TXT = "sem_last_loc_txt";
-  const LS_UPTIME  = "sem_last_uptime";
-  const LS_PZEM    = "sem_last_pzem"; // ON/OFF/BOOT
-  const LS_DEVICE  = "sem_last_device"; // ONLINE/OFFLINE
+  // ===================== LAST-KNOWN CACHE =====================
+  const LS = {
+    locUrl: "sem_loc_url",
+    locTxt: "sem_loc_txt",
+    uptime: "sem_uptime",
+    pzem:   "sem_pzem",
+    dev:    "sem_dev"
+  };
 
   function applyCached(){
-    const locUrl = localStorage.getItem(LS_LOC_URL) || "";
-    const locTxt = localStorage.getItem(LS_LOC_TXT) || "Point Location : --";
-    const upTxt  = localStorage.getItem(LS_UPTIME)  || "--";
-    const pzem   = localStorage.getItem(LS_PZEM)    || "UNKNOWN";
-    const dev    = localStorage.getItem(LS_DEVICE)  || "CONNECTING";
+    const locUrl = localStorage.getItem(LS.locUrl) || "";
+    const locTxt = localStorage.getItem(LS.locTxt) || "Point Location : --";
+    const uptime = localStorage.getItem(LS.uptime) || "--";
+    const pzem   = localStorage.getItem(LS.pzem)   || "UNKNOWN";
+    const dev    = localStorage.getItem(LS.dev)    || "CONNECTING";
 
-    // location
-    const locLink = document.getElementById("locLink");
-    const splashLoc = document.getElementById("splashLoc");
-    locLink.innerText = locTxt;
-    splashLoc.innerText = locTxt;
-    if (locUrl && locUrl.startsWith("http")) locLink.href = locUrl;
-    else locLink.href = "#";
-
-    // uptime
-    document.getElementById("uptimeText").innerText = upTxt;
-
-    // pzem/device
-    setDeviceState(dev);
+    setLocTextAndUrl(locTxt, locUrl);
+    setUptimeText(uptime);
     setPzemState(pzem);
-    document.getElementById("gpsText").innerText = (locUrl && locUrl.startsWith("http")) ? "READY" : "--";
+    setDeviceState(dev);
   }
 
+  // ===================== UI HELPERS =====================
   function setLastUpdateNow(){
     const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
     document.getElementById("lastUpdate").innerText = time;
@@ -324,20 +336,6 @@
     el.classList.remove("ok","warn","bad");
     if(state) el.classList.add(state);
   }
-  function setRSSI(rssi){
-    const bars = document.querySelectorAll("#rssiBars .bar");
-    bars.forEach(b => b.classList.remove("on","warn","bad"));
-    document.getElementById("rssiText").innerText = (rssi === null || isNaN(rssi)) ? "--" : rssi;
-    if (rssi === null || isNaN(rssi) || rssi === 99) return;
-    let level = 1;
-    if (rssi >= 10) level = 2;
-    if (rssi >= 15) level = 3;
-    if (rssi >= 20) level = 4;
-    let cls = "on";
-    if (rssi < 10) cls = "bad";
-    else if (rssi < 15) cls = "warn";
-    for(let i=0;i<level;i++) bars[i].classList.add(cls);
-  }
   function setText(id, val){ document.getElementById(id).innerText = val; }
   function setVoltageAlarm(v){
     const card = document.getElementById("cardV");
@@ -345,20 +343,36 @@
     if (isNaN(v)) return;
     if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
   }
+  function setRSSI(rssi){
+    const bars = document.querySelectorAll("#rssiBars .bar");
+    bars.forEach(b => b.classList.remove("on","warn","bad"));
+    document.getElementById("rssiText").innerText = (rssi === null || isNaN(rssi)) ? "--" : rssi;
+    if (rssi === null || isNaN(rssi) || rssi === 99) return;
+
+    let level = 1;
+    if (rssi >= 10) level = 2;
+    if (rssi >= 15) level = 3;
+    if (rssi >= 20) level = 4;
+
+    let cls = "on";
+    if (rssi < 10) cls = "bad";
+    else if (rssi < 15) cls = "warn";
+
+    for(let i=0;i<level;i++) bars[i].classList.add(cls);
+  }
 
   function setDeviceState(state){
     const led = document.getElementById("ledDevice");
     const txt = document.getElementById("deviceText");
-
     if (state === "ONLINE"){
-      setLed(led, "ok"); txt.innerText = "DEVICE: ONLINE";
-      localStorage.setItem(LS_DEVICE, "ONLINE");
+      setLed(led,"ok"); txt.innerText = "DEVICE: ONLINE";
+      localStorage.setItem(LS.dev, "ONLINE");
     } else if (state === "OFFLINE"){
-      setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE";
-      localStorage.setItem(LS_DEVICE, "OFFLINE");
+      setLed(led,"bad"); txt.innerText = "DEVICE: OFFLINE";
+      localStorage.setItem(LS.dev, "OFFLINE");
     } else {
-      setLed(led, null); txt.innerText = "DEVICE: CONNECTING";
-      localStorage.setItem(LS_DEVICE, "CONNECTING");
+      setLed(led,null); txt.innerText = "DEVICE: CONNECTING";
+      localStorage.setItem(LS.dev, "CONNECTING");
     }
   }
 
@@ -366,54 +380,63 @@
     const led = document.getElementById("ledPzem");
     const txt = document.getElementById("pzemText");
 
-    // FIX utama: BOOT itu status valid, jangan UNKNOWN
+    // BOOT dianggap status valid
     if (state === "ON"){
-      setLed(led, "ok"); txt.innerText = "PZEM: ON";
-      localStorage.setItem(LS_PZEM, "ON");
+      setLed(led,"ok"); txt.innerText = "PZEM: ON";
+      localStorage.setItem(LS.pzem, "ON");
     } else if (state === "OFF"){
-      setLed(led, "warn"); txt.innerText = "PZEM: OFF";
-      localStorage.setItem(LS_PZEM, "OFF");
-      // UI only
+      setLed(led,"warn"); txt.innerText = "PZEM: OFF";
+      localStorage.setItem(LS.pzem, "OFF");
+
+      // UI only -> 0
       setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
       setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
     } else if (state === "BOOT"){
-      setLed(led, "warn"); txt.innerText = "PZEM: BOOT";
-      localStorage.setItem(LS_PZEM, "BOOT");
+      setLed(led,"warn"); txt.innerText = "PZEM: BOOT";
+      localStorage.setItem(LS.pzem, "BOOT");
     } else {
-      setLed(led, null); txt.innerText = "PZEM: UNKNOWN";
-      localStorage.setItem(LS_PZEM, "UNKNOWN");
+      setLed(led,null); txt.innerText = "PZEM: UNKNOWN";
+      localStorage.setItem(LS.pzem, "UNKNOWN");
     }
   }
 
-  function setUptime(uptimeText){
-    const t = uptimeText && uptimeText.length ? uptimeText : "--";
+  function setUptimeText(u){
+    const t = (u && u.length) ? u : "--";
     document.getElementById("uptimeText").innerText = t;
-    localStorage.setItem(LS_UPTIME, t);
+    localStorage.setItem(LS.uptime, t);
   }
 
-  function setLocUrl(url){
+  // Opsi A: tampilkan link lokasi yang bisa diklik (langsung URL maps)
+  function setLocTextAndUrl(txt, url){
     const locLink = document.getElementById("locLink");
     const splashLoc = document.getElementById("splashLoc");
-    const gpsText = document.getElementById("gpsText");
+    locLink.innerText = txt || "Point Location : --";
+    splashLoc.innerText = txt || "Point Location : --";
 
-    if (url && url.startsWith("http")) {
-      const txt = "Point Location : (click to open maps)";
-      locLink.href = url;
-      locLink.innerText = txt;
-      splashLoc.innerText = txt;
-      gpsText.innerText = "READY";
-      localStorage.setItem(LS_LOC_URL, url);
-      localStorage.setItem(LS_LOC_TXT, txt);
-    }
+    if (url && url.startsWith("http")) locLink.href = url;
+    else locLink.href = "#";
+
+    localStorage.setItem(LS.locTxt, locLink.innerText);
+    if (url && url.startsWith("http")) localStorage.setItem(LS.locUrl, url);
   }
 
-  // ===== Parse =====
+  function setLocFromPayload(url){
+    // url dari firmware: https://maps.google.com/?q=lat,lon
+    const txt = "Point Location : (click to open maps)";
+    setLocTextAndUrl(txt, url);
+  }
+
+  // ===================== PARSERS (MATCH FIRMWARE) =====================
   function parseDataPayload(data){
     if (!data) return null;
-    if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
-    if (data.startsWith("STATUS:PZEM_ON"))  return { type:"pzemEvent", pzem:"ON"  };
 
+    // Firmware sends data topic event:
+    // STATUS:PZEM_OFF / STATUS:PZEM_ON
+    if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
+    if (data.startsWith("STATUS:PZEM_ON"))  return { type:"pzemEvent", pzem:"ON" };
+
+    // Normal payload: V...,A...,W...,kWh...,Hz...,PF...
     const items = data.split(",");
     const out = {};
     for(const item of items){
@@ -431,10 +454,12 @@
   function parseStatusPayload(data){
     if (!data) return null;
 
+    // Device online/offline
     if (data === "DEVICE_ONLINE")  return { type:"device", device:"ONLINE" };
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
-    if (data.startsWith("PZEM:")) {
+    // PZEM
+    if (data.startsWith("PZEM:")){
       const s = (data.split(":")[1] || "").trim();
       if (s === "ON") return { type:"pzem", pzem:"ON" };
       if (s === "OFF") return { type:"pzem", pzem:"OFF" };
@@ -442,24 +467,27 @@
       return { type:"pzem", pzem:"UNKNOWN" };
     }
 
-    if (data.startsWith("NET:")) {
+    // NET summary (RSSI)
+    if (data.startsWith("NET:")){
       const m = data.match(/RSSI:(\d+)/);
       const rssi = m ? parseInt(m[1], 10) : null;
       return { type:"net", rssi };
     }
 
-    if (data.startsWith("UPTIME:")) {
+    // UPTIME (firmware: UPTIME:xxhxxm)
+    if (data.startsWith("UPTIME:")){
       return { type:"uptime", uptime: data.replace("UPTIME:", "").trim() };
     }
 
-    if (data.startsWith("LOC:")) {
+    // LOC (firmware: LOC:https://maps.google.com/?q=lat,lon)
+    if (data.startsWith("LOC:")){
       return { type:"loc", url: data.slice(4).trim() };
     }
 
     return null;
   }
 
-  // ===== Charts =====
+  // ===================== CHARTS =====================
   const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
   const MAX_POINTS_LIVE = 120;
   let rangeMode = "live";
@@ -472,24 +500,41 @@
   }
 
   function xTicks(){
-    return { type:"linear", ticks:{ maxTicksLimit:6, callback:(value)=>new Date(value).toLocaleTimeString("id-ID",{hour12:false}) } };
+    return {
+      type: "linear",
+      ticks: {
+        maxTicksLimit: 6,
+        callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
+      }
+    };
   }
-  function yTicks(){ return { ticks:{ maxTicksLimit:6 } }; }
+  function yTicks(){ return { ticks: { maxTicksLimit: 6 } }; }
 
   const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
     type:"line",
     data:{ datasets:[{ label:"VAC", data:[], tension:0.25, pointRadius:0 }] },
-    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{legend:{display:false}},
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
+
   const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
     type:"line",
     data:{ datasets:[{ label:"W", data:[], tension:0.25, pointRadius:0 }] },
-    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{legend:{display:false}},
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
+
   const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
     type:"line",
     data:{ datasets:[{ label:"A", data:[], tension:0.25, pointRadius:0 }] },
-    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
+      plugins:{legend:{display:false}},
+      scales:{ x:xTicks(), y:yTicks() }
+    }
   });
 
   let lastRedraw = 0;
@@ -499,6 +544,7 @@
     lastRedraw = now;
 
     const maxPoints = (rangeMode === "1h") ? MAX_POINTS_1H : MAX_POINTS_LIVE;
+
     const vData = buf.V.slice(Math.max(0, buf.V.length - maxPoints));
     const wData = buf.W.slice(Math.max(0, buf.W.length - maxPoints));
     const aData = buf.A.slice(Math.max(0, buf.A.length - maxPoints));
@@ -525,10 +571,11 @@
   btnLive.addEventListener("click", () => setMode("live"));
   btn1h.addEventListener("click", () => setMode("1h"));
 
-  // ===== Init cached values =====
+  // ===================== INIT =====================
+  setLoadingText("Loading cached...");
   applyCached();
 
-  // ===== MQTT connect =====
+  // ===================== MQTT =====================
   setLoadingText("Connecting broker...");
   const client = mqtt.connect(WS_URL);
 
@@ -539,21 +586,23 @@
 
   client.on("message", (topic, message) => {
     const data = message.toString();
-    setLoadingText("Receiving...");
+
+    // Debug (biar gampang cek payload masuk apa tidak)
+    // console.log("RX", topic, data);
 
     if (topic === TOPIC_STATUS){
       const s = parseStatusPayload(data);
       if (!s) return;
 
-      // status valid => show dashboard
       showDashboard();
       setLastUpdateNow();
 
-      if (s.type === "device")  setDeviceState(s.device);
-      if (s.type === "pzem")    setPzemState(s.pzem);
-      if (s.type === "net")     setRSSI(s.rssi);
-      if (s.type === "uptime")  setUptime(s.uptime);
-      if (s.type === "loc")     setLocUrl(s.url);
+      if (s.type === "device") setDeviceState(s.device);
+      if (s.type === "pzem")   setPzemState(s.pzem);
+      if (s.type === "net")    setRSSI(s.rssi);
+      if (s.type === "uptime") setUptimeText(s.uptime);
+      if (s.type === "loc")    setLocFromPayload(s.url);
+
       return;
     }
 
@@ -578,6 +627,7 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
+        // kalau belum dapat DEVICE status, minimal tandai ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
 
@@ -585,6 +635,7 @@
         buf.V.push({ x: t, y: d.V });
         buf.W.push({ x: t, y: d.W });
         buf.A.push({ x: t, y: (d.A ?? 0) });
+
         trimBuffer(MAX_POINTS_1H);
         redrawCharts();
       }
@@ -592,8 +643,8 @@
   });
 
   client.on("reconnect", () => setLoadingText("Reconnecting broker..."));
-  client.on("error", () => setLoadingText("MQTT error"));
   client.on("close", () => setLoadingText("Connection closed"));
+  client.on("error", () => setLoadingText("MQTT error"));
 </script>
 </body>
 </html>
