@@ -3,7 +3,6 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SMART ENERGY METER</title>
-
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -20,8 +19,7 @@
       background: radial-gradient(1200px 600px at 20% -20%, rgba(77,163,255,.20), transparent 55%),
                   radial-gradient(1000px 600px at 110% 10%, rgba(36,209,138,.12), transparent 55%),
                   var(--bg);
-      color:var(--text);
-      overflow-x:hidden;
+      color:var(--text); overflow-x:hidden;
     }
     .wrap{ max-width: 1200px; margin: 0 auto; padding: 14px; }
     header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding: 6px 2px 14px 2px; }
@@ -29,7 +27,7 @@
     .title h1{ margin:0; font-size: 18px; letter-spacing:.6px; font-weight: 850; text-transform: uppercase; line-height: 1.05; }
     .title .brand{ margin:0; margin-top:-2px; color: var(--text); font-size: 14px; letter-spacing:.35px; font-weight: 800; opacity: .92; }
 
-    /* LOCATION as LINK (opsi A) */
+    /* Location as link (opsi A) */
     .title .location a{
       display:inline-block;
       color: var(--muted);
@@ -43,11 +41,7 @@
     .title .location a:hover{ color: var(--text); border-bottom-color: rgba(231,238,247,.5); }
 
     .subtitle{ color:var(--muted); font-size:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
-      border:1px solid var(--stroke); background: rgba(255,255,255,.03);
-      border-radius:999px; box-shadow: var(--shadow); white-space:nowrap;
-    }
+    .pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--stroke); background: rgba(255,255,255,.03); border-radius:999px; box-shadow: var(--shadow); white-space:nowrap; }
     .led{ width:10px;height:10px;border-radius:50%; background: #556; box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset; }
     .led.ok{ background: var(--ok); box-shadow: 0 0 12px rgba(36,209,138,.45); }
     .led.warn{ background: var(--warn); box-shadow: 0 0 12px rgba(247,201,72,.35); }
@@ -60,6 +54,7 @@
 
     .grid{ display:grid; gap:12px; }
     .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
+
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
       border:1px solid var(--stroke); border-radius: var(--radius); padding: 14px;
@@ -83,10 +78,7 @@
     .chart-title{ font-size: 13px; letter-spacing:.25px; color: var(--muted); text-transform: uppercase; display:flex; align-items:center; gap:8px; font-weight: 800; }
 
     .seg{ display:flex; gap:6px; flex-wrap:wrap; }
-    .seg button{
-      border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text);
-      padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 750; font-size: 12px;
-    }
+    .seg button{ border:1px solid var(--stroke); background: rgba(255,255,255,.03); color: var(--text); padding: 7px 10px; border-radius: 10px; cursor:pointer; font-weight: 750; font-size: 12px; }
     .seg button.active{ border-color: rgba(77,163,255,.55); box-shadow: 0 0 0 1px rgba(77,163,255,.2) inset; }
 
     @media (min-width: 1024px){
@@ -132,7 +124,6 @@
 </head>
 
 <body>
-  <!-- Splash -->
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
@@ -145,7 +136,6 @@
     </div>
   </div>
 
-  <!-- App -->
   <div id="app">
     <div class="wrap">
       <header>
@@ -153,7 +143,6 @@
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
 
-          <!-- opsi A: location dinamis dari LOC -->
           <div class="location">
             <a id="locLink" href="#" target="_blank" rel="noopener">Point Location : --</a>
           </div>
@@ -197,13 +186,9 @@
 
       <div class="grid kpi-grid">
         <div id="cardV" class="card">
-          <div class="kpi-top">
-            <div class="kpi-label">⚡ AC Voltage</div>
-          </div>
+          <div class="kpi-top"><div class="kpi-label">⚡ AC Voltage</div></div>
           <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
-          <div class="kpi-foot">
-            <span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span>
-          </div>
+          <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
         </div>
 
         <div class="card">
@@ -238,35 +223,22 @@
 
         <div class="card">
           <div class="kpi-top"><div class="kpi-label">🛰️ GPS</div></div>
-          <div class="kpi-value" style="font-size:16px;font-weight:900;">
-            <span id="gpsText">--</span>
-          </div>
+          <div class="kpi-value" style="font-size:16px;font-weight:900;"><span id="gpsText">--</span></div>
           <div class="kpi-foot"><span class="small-muted">from STATUS: LOC:...</span></div>
         </div>
       </div>
 
       <div class="grid charts" style="margin-top:12px;">
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📈 Voltage (last window)</div>
-            <div class="small-muted" id="chartHintV">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📈 Voltage (last window)</div><div class="small-muted" id="chartHintV">--</div></div>
           <canvas id="chartV"></canvas>
         </div>
-
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📉 Power (last window)</div>
-            <div class="small-muted" id="chartHintW">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📉 Power (last window)</div><div class="small-muted" id="chartHintW">--</div></div>
           <canvas id="chartW"></canvas>
         </div>
-
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📊 Current (last window)</div>
-            <div class="small-muted" id="chartHintA">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📊 Current (last window)</div><div class="small-muted" id="chartHintA">--</div></div>
           <canvas id="chartA"></canvas>
         </div>
       </div>
@@ -279,26 +251,26 @@
   </div>
 
 <script>
-  // ===== Broker WS (tetap EMQX) =====
+  // ===== MQTT SETTINGS =====
   const WS_URL = "wss://broker.emqx.io:8084/mqtt";
 
-  // ===== Default topics (sesuai firmware kamu) =====
+  // ===== TOPICS (DEFAULT = firmware) =====
   const DEFAULT_TOPIC_DATA   = "FADHIL/FATHOM/DATA";
   const DEFAULT_TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
 
-  // ===== Optional override via URL: ?data=...&status=... =====
+  // optional: override via URL ?data=...&status=...
   const qs = new URLSearchParams(location.search);
   const TOPIC_DATA   = qs.get("data")   || DEFAULT_TOPIC_DATA;
   const TOPIC_STATUS = qs.get("status") || DEFAULT_TOPIC_STATUS;
 
-  // ===== UI Settings =====
+  document.getElementById("topicDataLabel").innerText = TOPIC_DATA;
+  document.getElementById("topicStatusLabel").innerText = TOPIC_STATUS;
+
+  // ===== UI SETTINGS =====
   const V_LOW = 210;
   const V_HIGH = 245;
   document.getElementById("vLowTxt").innerText = V_LOW;
   document.getElementById("vHighTxt").innerText = V_HIGH;
-
-  document.getElementById("topicDataLabel").innerText = TOPIC_DATA;
-  document.getElementById("topicStatusLabel").innerText = TOPIC_STATUS;
 
   // ===== Splash control =====
   let appShown = false;
@@ -313,47 +285,37 @@
     if(el) el.innerText = txt;
   }
 
-  // ===== Local cache (agar LOC & UPTIME tetap muncul walau belum ada retain) =====
+  // ===== Cache (last known) =====
   const LS_LOC_URL = "sem_last_loc_url";
   const LS_LOC_TXT = "sem_last_loc_txt";
   const LS_UPTIME  = "sem_last_uptime";
+  const LS_PZEM    = "sem_last_pzem"; // ON/OFF/BOOT
+  const LS_DEVICE  = "sem_last_device"; // ONLINE/OFFLINE
 
-  function applyCachedLocUptime(){
+  function applyCached(){
     const locUrl = localStorage.getItem(LS_LOC_URL) || "";
     const locTxt = localStorage.getItem(LS_LOC_TXT) || "Point Location : --";
     const upTxt  = localStorage.getItem(LS_UPTIME)  || "--";
+    const pzem   = localStorage.getItem(LS_PZEM)    || "UNKNOWN";
+    const dev    = localStorage.getItem(LS_DEVICE)  || "CONNECTING";
 
-    // header location
+    // location
     const locLink = document.getElementById("locLink");
     const splashLoc = document.getElementById("splashLoc");
-    const gpsText = document.getElementById("gpsText");
-
-    splashLoc.innerText = locTxt;
     locLink.innerText = locTxt;
+    splashLoc.innerText = locTxt;
+    if (locUrl && locUrl.startsWith("http")) locLink.href = locUrl;
+    else locLink.href = "#";
 
-    if (locUrl && locUrl.startsWith("http")) {
-      locLink.href = locUrl;
-      gpsText.innerText = "READY";
-    } else {
-      locLink.href = "#";
-      gpsText.innerText = "--";
-    }
-
+    // uptime
     document.getElementById("uptimeText").innerText = upTxt;
-  }
-  applyCachedLocUptime();
 
-  // ===== Helpers =====
-  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
-  const MAX_POINTS_LIVE = 120;
-  let rangeMode = "live";
-  const buf = { V: [], W: [], A: [] }; // {x,y}
-
-  function trimBuffer(maxPoints){
-    while (buf.V.length > maxPoints) buf.V.shift();
-    while (buf.W.length > maxPoints) buf.W.shift();
-    while (buf.A.length > maxPoints) buf.A.shift();
+    // pzem/device
+    setDeviceState(dev);
+    setPzemState(pzem);
+    document.getElementById("gpsText").innerText = (locUrl && locUrl.startsWith("http")) ? "READY" : "--";
   }
+
   function setLastUpdateNow(){
     const time = new Date().toLocaleTimeString("id-ID", { hour12: false });
     document.getElementById("lastUpdate").innerText = time;
@@ -367,16 +329,13 @@
     bars.forEach(b => b.classList.remove("on","warn","bad"));
     document.getElementById("rssiText").innerText = (rssi === null || isNaN(rssi)) ? "--" : rssi;
     if (rssi === null || isNaN(rssi) || rssi === 99) return;
-
     let level = 1;
     if (rssi >= 10) level = 2;
     if (rssi >= 15) level = 3;
     if (rssi >= 20) level = 4;
-
     let cls = "on";
     if (rssi < 10) cls = "bad";
     else if (rssi < 15) cls = "warn";
-
     for(let i=0;i<level;i++) bars[i].classList.add(cls);
   }
   function setText(id, val){ document.getElementById(id).innerText = val; }
@@ -387,12 +346,71 @@
     if (v < V_LOW || v > V_HIGH) card.classList.add("alarm");
   }
 
-  // ===== Parse DATA payload (firmware) =====
-  // - STATUS:PZEM_OFF / STATUS:PZEM_ON
-  // - V..,A..,W..,kWh..,Hz..,PF..
+  function setDeviceState(state){
+    const led = document.getElementById("ledDevice");
+    const txt = document.getElementById("deviceText");
+
+    if (state === "ONLINE"){
+      setLed(led, "ok"); txt.innerText = "DEVICE: ONLINE";
+      localStorage.setItem(LS_DEVICE, "ONLINE");
+    } else if (state === "OFFLINE"){
+      setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE";
+      localStorage.setItem(LS_DEVICE, "OFFLINE");
+    } else {
+      setLed(led, null); txt.innerText = "DEVICE: CONNECTING";
+      localStorage.setItem(LS_DEVICE, "CONNECTING");
+    }
+  }
+
+  function setPzemState(state){
+    const led = document.getElementById("ledPzem");
+    const txt = document.getElementById("pzemText");
+
+    // FIX utama: BOOT itu status valid, jangan UNKNOWN
+    if (state === "ON"){
+      setLed(led, "ok"); txt.innerText = "PZEM: ON";
+      localStorage.setItem(LS_PZEM, "ON");
+    } else if (state === "OFF"){
+      setLed(led, "warn"); txt.innerText = "PZEM: OFF";
+      localStorage.setItem(LS_PZEM, "OFF");
+      // UI only
+      setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
+      setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
+      setVoltageAlarm(0);
+    } else if (state === "BOOT"){
+      setLed(led, "warn"); txt.innerText = "PZEM: BOOT";
+      localStorage.setItem(LS_PZEM, "BOOT");
+    } else {
+      setLed(led, null); txt.innerText = "PZEM: UNKNOWN";
+      localStorage.setItem(LS_PZEM, "UNKNOWN");
+    }
+  }
+
+  function setUptime(uptimeText){
+    const t = uptimeText && uptimeText.length ? uptimeText : "--";
+    document.getElementById("uptimeText").innerText = t;
+    localStorage.setItem(LS_UPTIME, t);
+  }
+
+  function setLocUrl(url){
+    const locLink = document.getElementById("locLink");
+    const splashLoc = document.getElementById("splashLoc");
+    const gpsText = document.getElementById("gpsText");
+
+    if (url && url.startsWith("http")) {
+      const txt = "Point Location : (click to open maps)";
+      locLink.href = url;
+      locLink.innerText = txt;
+      splashLoc.innerText = txt;
+      gpsText.innerText = "READY";
+      localStorage.setItem(LS_LOC_URL, url);
+      localStorage.setItem(LS_LOC_TXT, txt);
+    }
+  }
+
+  // ===== Parse =====
   function parseDataPayload(data){
     if (!data) return null;
-
     if (data.startsWith("STATUS:PZEM_OFF")) return { type:"pzemEvent", pzem:"OFF" };
     if (data.startsWith("STATUS:PZEM_ON"))  return { type:"pzemEvent", pzem:"ON"  };
 
@@ -410,12 +428,6 @@
     return null;
   }
 
-  // ===== Parse STATUS payload (firmware) =====
-  // DEVICE_ONLINE / DEVICE_OFFLINE
-  // PZEM:ON / PZEM:OFF / PZEM:BOOT
-  // NET:OK,GPRS:OK,RSSI:xx
-  // UPTIME:xxhxxm  (HANYA ini yang ditampilkan)
-  // LOC:https://maps.google.com/?q=...
   function parseStatusPayload(data){
     if (!data) return null;
 
@@ -423,7 +435,7 @@
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
     if (data.startsWith("PZEM:")) {
-      const s = data.split(":")[1] || "";
+      const s = (data.split(":")[1] || "").trim();
       if (s === "ON") return { type:"pzem", pzem:"ON" };
       if (s === "OFF") return { type:"pzem", pzem:"OFF" };
       if (s === "BOOT") return { type:"pzem", pzem:"BOOT" };
@@ -441,53 +453,43 @@
     }
 
     if (data.startsWith("LOC:")) {
-      const url = data.slice(4).trim();
-      return { type:"loc", url };
+      return { type:"loc", url: data.slice(4).trim() };
     }
 
     return null;
   }
 
   // ===== Charts =====
-  function xTicks(){
-    return {
-      type: "linear",
-      ticks: {
-        maxTicksLimit: 6,
-        callback: (value) => new Date(value).toLocaleTimeString("id-ID", { hour12:false })
-      }
-    };
+  const MAX_POINTS_1H = Math.floor((60 * 60 * 1000) / 5000) + 50;
+  const MAX_POINTS_LIVE = 120;
+  let rangeMode = "live";
+  const buf = { V: [], W: [], A: [] };
+
+  function trimBuffer(maxPoints){
+    while (buf.V.length > maxPoints) buf.V.shift();
+    while (buf.W.length > maxPoints) buf.W.shift();
+    while (buf.A.length > maxPoints) buf.A.shift();
   }
-  function yTicks(){ return { ticks: { maxTicksLimit: 6 } }; }
+
+  function xTicks(){
+    return { type:"linear", ticks:{ maxTicksLimit:6, callback:(value)=>new Date(value).toLocaleTimeString("id-ID",{hour12:false}) } };
+  }
+  function yTicks(){ return { ticks:{ maxTicksLimit:6 } }; }
 
   const chartV = new Chart(document.getElementById("chartV").getContext("2d"), {
-    type: "line",
-    data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
-      plugins:{ legend:{ display:false } },
-      scales:{ x:xTicks(), y:yTicks() }
-    }
+    type:"line",
+    data:{ datasets:[{ label:"VAC", data:[], tension:0.25, pointRadius:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
   });
-
   const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
-    type: "line",
-    data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
-      plugins:{ legend:{ display:false } },
-      scales:{ x:xTicks(), y:yTicks() }
-    }
+    type:"line",
+    data:{ datasets:[{ label:"W", data:[], tension:0.25, pointRadius:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
   });
-
   const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
-    type: "line",
-    data: { datasets: [{ label:"A", data: [], tension: 0.25, pointRadius: 0 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false, animation:false, parsing:false,
-      plugins:{ legend:{ display:false } },
-      scales:{ x:xTicks(), y:yTicks() }
-    }
+    type:"line",
+    data:{ datasets:[{ label:"A", data:[], tension:0.25, pointRadius:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{x:xTicks(), y:yTicks()} }
   });
 
   let lastRedraw = 0;
@@ -512,7 +514,6 @@
     document.getElementById("chartHintA").innerText = `${aData.length} points`;
   }
 
-  // ===== Buttons =====
   const btnLive = document.getElementById("btnLive");
   const btn1h = document.getElementById("btn1h");
   function setMode(mode){
@@ -524,68 +525,10 @@
   btnLive.addEventListener("click", () => setMode("live"));
   btn1h.addEventListener("click", () => setMode("1h"));
 
-  // ===== State UI =====
-  function setDeviceState(state){
-    const led = document.getElementById("ledDevice");
-    const txt = document.getElementById("deviceText");
+  // ===== Init cached values =====
+  applyCached();
 
-    if (state === "ONLINE"){
-      setLed(led, "ok"); txt.innerText = "DEVICE: ONLINE";
-    } else if (state === "OFFLINE"){
-      setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE";
-    } else {
-      setLed(led, null); txt.innerText = "DEVICE: CONNECTING";
-    }
-  }
-
-  function setPzemState(state){
-    const led = document.getElementById("ledPzem");
-    const txt = document.getElementById("pzemText");
-
-    if (state === "ON"){
-      setLed(led, "ok"); txt.innerText = "PZEM: ON";
-    } else if (state === "OFF"){
-      setLed(led, "warn"); txt.innerText = "PZEM: OFF";
-      // UI only set 0
-      setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
-      setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
-      setVoltageAlarm(0);
-    } else if (state === "BOOT"){
-      setLed(led, "warn"); txt.innerText = "PZEM: BOOT";
-    } else {
-      setLed(led, null); txt.innerText = "PZEM: UNKNOWN";
-    }
-  }
-
-  function setLocUrl(url){
-    const locLink = document.getElementById("locLink");
-    const splashLoc = document.getElementById("splashLoc");
-    const gpsText = document.getElementById("gpsText");
-
-    if (url && url.startsWith("http")) {
-      const txt = "Point Location : (click to open maps)";
-      locLink.href = url;
-      locLink.innerText = txt;
-      splashLoc.innerText = txt;
-      gpsText.innerText = "READY";
-
-      localStorage.setItem(LS_LOC_URL, url);
-      localStorage.setItem(LS_LOC_TXT, txt);
-    }
-  }
-
-  function setUptime(uptimeText){
-    const t = uptimeText && uptimeText.length ? uptimeText : "--";
-    document.getElementById("uptimeText").innerText = t;
-    localStorage.setItem(LS_UPTIME, t);
-  }
-
-  // init (app hidden)
-  setDeviceState("CONNECTING");
-  setPzemState("UNKNOWN");
-  setRSSI(null);
-
-  // ===== MQTT =====
+  // ===== MQTT connect =====
   setLoadingText("Connecting broker...");
   const client = mqtt.connect(WS_URL);
 
@@ -602,7 +545,7 @@
       const s = parseStatusPayload(data);
       if (!s) return;
 
-      // begitu ada STATUS valid -> tampil dashboard
+      // status valid => show dashboard
       showDashboard();
       setLastUpdateNow();
 
@@ -611,7 +554,6 @@
       if (s.type === "net")     setRSSI(s.rssi);
       if (s.type === "uptime")  setUptime(s.uptime);
       if (s.type === "loc")     setLocUrl(s.url);
-
       return;
     }
 
@@ -636,7 +578,6 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
-        // kalau belum pernah dapat device status, minimal set ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
 
@@ -654,6 +595,5 @@
   client.on("error", () => setLoadingText("MQTT error"));
   client.on("close", () => setLoadingText("Connection closed"));
 </script>
-
 </body>
 </html>
