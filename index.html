@@ -33,11 +33,7 @@
       overflow-x:hidden;
     }
 
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px;
-    }
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: 14px; }
 
     header{
       display:flex;
@@ -47,11 +43,7 @@
       padding: 6px 2px 14px 2px;
     }
 
-    .title{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
+    .title{ display:flex; flex-direction:column; gap:2px; }
     .title h1{
       margin:0;
       font-size: 18px;
@@ -119,17 +111,8 @@
     .led.warn{ background: var(--warn); box-shadow: 0 0 12px rgba(247,201,72,.35); }
     .led.bad{ background: var(--bad); box-shadow: 0 0 12px rgba(255,77,77,.35); }
 
-    .rssi{
-      display:inline-flex;
-      gap:3px;
-      align-items:flex-end;
-      height:12px;
-    }
-    .bar{
-      width:4px;
-      background: rgba(159,176,195,.35);
-      border-radius:2px;
-    }
+    .rssi{ display:inline-flex; gap:3px; align-items:flex-end; height:12px; }
+    .bar{ width:4px; background: rgba(159,176,195,.35); border-radius:2px; }
     .bar.on{ background: var(--ok); }
     .bar.warn{ background: var(--warn); }
     .bar.bad{ background: var(--bad); }
@@ -150,7 +133,6 @@
       position:relative;
       overflow:hidden;
     }
-
     .card:before{
       content:"";
       position:absolute;
@@ -161,13 +143,7 @@
       pointer-events:none;
     }
 
-    .kpi-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 8px;
-    }
+    .kpi-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
     .kpi-label{
       color: var(--muted);
       font-size: 12px;
@@ -178,27 +154,9 @@
       text-transform: uppercase;
       font-weight: 750;
     }
-    .kpi-value{
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing:.3px;
-      line-height:1.05;
-    }
-    .kpi-unit{
-      color: var(--muted);
-      font-size: 12px;
-      margin-left: 6px;
-      font-weight: 750;
-    }
-    .kpi-foot{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .kpi-value{ font-size: 28px; font-weight: 900; letter-spacing:.3px; line-height:1.05; }
+    .kpi-unit{ color: var(--muted); font-size: 12px; margin-left: 6px; font-weight: 750; }
+    .kpi-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top: 8px; color: var(--muted); font-size: 12px; }
 
     .alarm{
       border-color: rgba(255,77,77,.7) !important;
@@ -207,14 +165,7 @@
     .alarm .kpi-value{ color: var(--bad); }
 
     .charts{ grid-template-columns: 1fr; }
-
-    .chart-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
+    .chart-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
     .chart-title{
       font-size: 13px;
       letter-spacing:.25px;
@@ -226,11 +177,7 @@
       font-weight: 800;
     }
 
-    .seg{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
+    .seg{ display:flex; gap:6px; flex-wrap:wrap; }
     .seg button{
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.03);
@@ -330,7 +277,6 @@
 
 <body>
 
-  <!-- Splash / Loading -->
   <div id="splash">
     <div class="splash-card">
       <div class="splash-title">SMART ENERGY METER</div>
@@ -344,7 +290,6 @@
     </div>
   </div>
 
-  <!-- App (Dashboard) -->
   <div id="app">
     <div class="wrap">
 
@@ -353,7 +298,6 @@
           <h1>SMART ENERGY METER</h1>
           <div class="brand">by MahaKaryaTeknologi</div>
 
-          <!-- REAL LOCATION -->
           <div class="location">
             <span id="locText">Point Location : waiting GPS...</span>
             <a id="locLink" href="#" target="_blank" rel="noopener" style="display:none;">Open Maps</a>
@@ -370,7 +314,6 @@
               <span id="pzemText">PZEM: UNKNOWN</span>
             </span>
 
-            <!-- ✅ NEW: UPTIME PILL -->
             <span class="pill">
               <span class="small-muted">UPTIME</span>
               <span id="uptimeText">--</span>
@@ -399,39 +342,32 @@
 
       <div class="grid kpi-grid">
         <div id="cardV" class="card">
-          <div class="kpi-top">
-            <div class="kpi-label">⚡ AC Voltage</div>
-          </div>
+          <div class="kpi-top"><div class="kpi-label">⚡ AC Voltage</div></div>
           <div class="kpi-value"><span id="V">--</span><span class="kpi-unit">VAC</span></div>
           <div class="kpi-foot"><span class="small-muted">Alarm if &lt; <span id="vLowTxt">210</span>V or &gt; <span id="vHighTxt">245</span>V</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">💡 Current</div></div>
           <div class="kpi-value"><span id="A">--</span><span class="kpi-unit">A</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🏗️ Power</div></div>
           <div class="kpi-value"><span id="W">--</span><span class="kpi-unit">W</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🔋 Energy</div></div>
           <div class="kpi-value"><span id="kWh">--</span><span class="kpi-unit">kWh</span></div>
           <div class="kpi-foot"><span class="small-muted">Accumulated</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">📡 Frequency</div></div>
           <div class="kpi-value"><span id="Hz">--</span><span class="kpi-unit">Hz</span></div>
           <div class="kpi-foot"><span class="small-muted">Grid</span></div>
         </div>
 
-        <div class="card">
-          <div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
+        <div class="card"><div class="kpi-top"><div class="kpi-label">🧮 Power Factor</div></div>
           <div class="kpi-value"><span id="PF">--</span></div>
           <div class="kpi-foot"><span class="small-muted">Realtime</span></div>
         </div>
@@ -439,26 +375,17 @@
 
       <div class="grid charts" style="margin-top:12px;">
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📈 Voltage (last window)</div>
-            <div class="small-muted" id="chartHintV">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📈 Voltage (last window)</div><div class="small-muted" id="chartHintV">--</div></div>
           <canvas id="chartV"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📉 Power (last window)</div>
-            <div class="small-muted" id="chartHintW">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📉 Power (last window)</div><div class="small-muted" id="chartHintW">--</div></div>
           <canvas id="chartW"></canvas>
         </div>
 
         <div class="card chart">
-          <div class="chart-head">
-            <div class="chart-title">📊 Current (last window)</div>
-            <div class="small-muted" id="chartHintA">--</div>
-          </div>
+          <div class="chart-head"><div class="chart-title">📊 Current (last window)</div><div class="small-muted" id="chartHintA">--</div></div>
           <canvas id="chartA"></canvas>
         </div>
       </div>
@@ -479,12 +406,17 @@
   const TOPIC_DATA   = "FADHIL/FATHOM/DATA";
   const TOPIC_STATUS = "FADHIL/FATHOM/STATUS";
 
+  // ✅ SUBTOPIC RETAINED (agar saat dashboard dibuka telat, langsung dapat data terakhir)
+  const TOPIC_STATUS_ALL = TOPIC_STATUS + "/#";
+  const TOPIC_STATUS_LOC = TOPIC_STATUS + "/LOC";
+  const TOPIC_STATUS_UP  = TOPIC_STATUS + "/UPTIME";
+
   // ===== AUTH (sesuai firmware ESP) =====
   const MQTT_USER = "fathomtroops";
   const MQTT_PASS = "Mule1234";
 
   document.getElementById("tData").innerText = TOPIC_DATA;
-  document.getElementById("tStatus").innerText = TOPIC_STATUS;
+  document.getElementById("tStatus").innerText = TOPIC_STATUS + " + " + TOPIC_STATUS_ALL;
 
   // ===== UI SETTINGS =====
   const V_LOW = 210;
@@ -505,7 +437,7 @@
     if(el) el.innerText = txt;
   }
 
-  // ===== REAL LOCATION (from STATUS: LOC:https://maps.google.com/?q=lat,lon) =====
+  // ===== Location from retained topic =====
   let lastLocUrl = "";
   function setLocationFromUrl(url){
     if(!url || typeof url !== "string") return;
@@ -529,7 +461,7 @@
     }
   }
 
-  // ===== ✅ NEW: UPTIME =====
+  // ===== Uptime =====
   function setUptimeText(txt){
     const el = document.getElementById("uptimeText");
     if(!el) return;
@@ -575,14 +507,10 @@
     if (rssi < 10) cls = "bad";
     else if (rssi < 15) cls = "warn";
 
-    for(let i=0;i<level;i++){
-      bars[i].classList.add(cls);
-    }
+    for(let i=0;i<level;i++) bars[i].classList.add(cls);
   }
 
-  function setText(id, val){
-    document.getElementById(id).innerText = val;
-  }
+  function setText(id, val){ document.getElementById(id).innerText = val; }
 
   function setVoltageAlarm(v){
     const card = document.getElementById("cardV");
@@ -610,25 +538,17 @@
     return null;
   }
 
+  // Status payload lama (kalau masih dipakai)
   function parseStatusPayload(data){
     if (!data) return null;
 
     if (data === "DEVICE_ONLINE") return { type:"device", device:"ONLINE" };
     if (data === "DEVICE_OFFLINE") return { type:"device", device:"OFFLINE" };
 
-    // ✅ UPTIME
-    if (data.startsWith("UPTIME:")) {
-      return { type:"uptime", text: data.slice(7).trim() };
-    }
-    if (data.startsWith("BOOT:UPTIME:")) {
-      return { type:"uptime", text: data.slice(12).trim() };
-    }
+    if (data.startsWith("UPTIME:")) return { type:"uptime", text: data.slice(7).trim() };
+    if (data.startsWith("BOOT:UPTIME:")) return { type:"uptime", text: data.slice(12).trim() };
 
-    // LOC:https://maps.google.com/?q=...
-    if (data.startsWith("LOC:")){
-      const url = data.slice(4).trim();
-      return { type:"loc", url };
-    }
+    if (data.startsWith("LOC:")) return { type:"loc", url: data.slice(4).trim() };
 
     if (data.startsWith("PZEM:")){
       const s = data.split(":")[1];
@@ -661,20 +581,17 @@
     data: { datasets: [{ label:"VAC", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
-
   const chartW = new Chart(document.getElementById("chartW").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"W", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
-
   const chartA = new Chart(document.getElementById("chartA").getContext("2d"), {
     type: "line",
     data: { datasets: [{ label:"A", data: [], tension: 0.25, pointRadius: 0 }] },
     options: { responsive:true, maintainAspectRatio:false, animation:false, parsing:false, plugins:{legend:{display:false}}, scales:{ x:xTicks(), y:yTicks() } }
   });
 
-  // ===== Redraw =====
   let lastRedraw = 0;
   function redrawCharts(){
     const now = Date.now();
@@ -698,10 +615,8 @@
     document.getElementById("chartHintA").innerText = `${aData.length} points`;
   }
 
-  // ===== Buttons =====
   const btnLive = document.getElementById("btnLive");
   const btn1h = document.getElementById("btn1h");
-
   function setMode(mode){
     rangeMode = mode;
     btnLive.classList.toggle("active", mode === "live");
@@ -715,33 +630,23 @@
   function setDeviceState(state){
     const led = document.getElementById("ledDevice");
     const txt = document.getElementById("deviceText");
-    if (state === "ONLINE"){
-      setLed(led, "ok");
-      txt.innerText = "DEVICE: ONLINE";
-    } else if (state === "OFFLINE"){
-      setLed(led, "bad");
-      txt.innerText = "DEVICE: OFFLINE";
-    } else {
-      setLed(led, null);
-      txt.innerText = "DEVICE: CONNECTING";
-    }
+    if (state === "ONLINE"){ setLed(led, "ok");  txt.innerText = "DEVICE: ONLINE"; }
+    else if (state === "OFFLINE"){ setLed(led, "bad"); txt.innerText = "DEVICE: OFFLINE"; }
+    else { setLed(led, null); txt.innerText = "DEVICE: CONNECTING"; }
   }
 
   function setPzemState(state){
     const led = document.getElementById("ledPzem");
     const txt = document.getElementById("pzemText");
     if (state === "ON"){
-      setLed(led, "ok");
-      txt.innerText = "PZEM: ON";
+      setLed(led, "ok"); txt.innerText = "PZEM: ON";
     } else if (state === "OFF"){
-      setLed(led, "warn");
-      txt.innerText = "PZEM: OFF";
+      setLed(led, "warn"); txt.innerText = "PZEM: OFF";
       setText("V","0.0"); setText("A","0.00"); setText("W","0.0");
       setText("kWh","0.000"); setText("Hz","0.0"); setText("PF","0.00");
       setVoltageAlarm(0);
     } else {
-      setLed(led, null);
-      txt.innerText = "PZEM: UNKNOWN";
+      setLed(led, null); txt.innerText = "PZEM: UNKNOWN";
     }
   }
 
@@ -762,8 +667,9 @@
   });
 
   client.on("connect", () => {
-    setLoadingText("Subscribed, waiting messages...");
-    client.subscribe([TOPIC_DATA, TOPIC_STATUS], { qos: 0 });
+    setLoadingText("Subscribed, receiving retained...");
+    // ✅ penting: subscribe STATUS/# supaya LOC & UPTIME retained langsung masuk walau device sudah ON lama
+    client.subscribe([TOPIC_DATA, TOPIC_STATUS_ALL], { qos: 0 });
   });
 
   client.on("reconnect", () => {
@@ -784,7 +690,23 @@
     const data = message.toString();
     setLoadingText("Receiving...");
 
-    if (topic === TOPIC_STATUS){
+    // ✅ STATUS bisa datang dari STATUS atau STATUS/LOC atau STATUS/UPTIME
+    if (topic === TOPIC_STATUS || topic.startsWith(TOPIC_STATUS + "/")) {
+
+      // handle retained by TOPIC (paling penting)
+      if (topic === TOPIC_STATUS_LOC) {
+        if (data.startsWith("LOC:")) setLocationFromUrl(data.slice(4).trim());
+        showDashboard(); setLastUpdateNow();
+        return;
+      }
+      if (topic === TOPIC_STATUS_UP) {
+        if (data.startsWith("UPTIME:")) setUptimeText(data.slice(7).trim());
+        else if (data.startsWith("BOOT:UPTIME:")) setUptimeText(data.slice(12).trim());
+        showDashboard(); setLastUpdateNow();
+        return;
+      }
+
+      // masih dukung payload lama di TOPIC_STATUS
       const s = parseStatusPayload(data);
       if (!s) return;
 
