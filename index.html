@@ -132,6 +132,167 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     #app{ display:none; }
+
+    /* ===================== PHASE 3: TAB NAV + PANELS ===================== */
+    .tabnav{
+      display:flex; gap:6px; flex-wrap:wrap;
+      margin: 4px 0 12px 0;
+      padding: 6px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    .tabnav button{
+      flex:1 1 auto;
+      min-width: 90px;
+      border:1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-weight: 850;
+      font-size: 12px;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .tabnav button:hover{ color: var(--text); background: rgba(255,255,255,.04); }
+    .tabnav button.active{
+      color: var(--text);
+      background: rgba(77,163,255,.10);
+      border-color: rgba(77,163,255,.45);
+      box-shadow: 0 0 0 1px rgba(77,163,255,.18) inset;
+    }
+
+    .tab-content{ display:none; }
+    .tab-content.active{ display:block; }
+
+    /* Section title inside non-monitor panels */
+    .panel-title{
+      font-size: 13px; letter-spacing:.4px; color: var(--muted);
+      text-transform: uppercase; font-weight: 900;
+      margin: 0 0 12px 0;
+      display:flex; align-items:center; gap:8px;
+    }
+    .panel-title .dot{ width:8px; height:8px; border-radius:50%; background: var(--ok); box-shadow: 0 0 10px rgba(36,209,138,.45); }
+
+    /* Forms (Alert tab) */
+    .field{ display:flex; flex-direction:column; gap:6px; margin-bottom: 12px; }
+    .field label{ color: var(--muted); font-size: 12px; letter-spacing:.3px; font-weight: 800; text-transform: uppercase; }
+    .field input[type="text"],
+    .field input[type="tel"],
+    .field input[type="number"]{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline:none;
+    }
+    .field input:focus{ border-color: rgba(77,163,255,.55); box-shadow: 0 0 0 2px rgba(77,163,255,.15); }
+
+    .row2{ display:grid; gap:12px; grid-template-columns: 1fr; }
+    @media (min-width: 720px){ .row2{ grid-template-columns: 1fr 1fr; } }
+
+    /* Toggle switch */
+    .toggle{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 10px 12px; border:1px solid var(--stroke); background: rgba(255,255,255,.03); border-radius: 12px; }
+    .toggle .label{ font-weight: 850; font-size: 13px; }
+    .switch{ position:relative; width:46px; height:24px; }
+    .switch input{ opacity:0; width:0; height:0; }
+    .slider{ position:absolute; inset:0; background: rgba(159,176,195,.35); border-radius: 999px; transition: .15s; cursor:pointer; }
+    .slider:before{ content:""; position:absolute; left:3px; top:3px; width:18px; height:18px; background: #fff; border-radius:50%; transition:.15s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    .switch input:checked + .slider{ background: var(--ok); }
+    .switch input:checked + .slider:before{ transform: translateX(22px); }
+
+    /* Checkbox grid (Alert rules) */
+    .checkgrid{ display:grid; gap:8px; grid-template-columns: 1fr; margin: 4px 0 12px 0; }
+    @media (min-width: 720px){ .checkgrid{ grid-template-columns: 1fr 1fr; } }
+    .checkitem{ display:flex; align-items:center; gap:10px; padding: 9px 12px; border:1px solid var(--stroke); background: rgba(255,255,255,.025); border-radius: 10px; cursor:pointer; user-select:none; }
+    .checkitem input[type="checkbox"]{ width:16px; height:16px; accent-color: #4da3ff; cursor:pointer; }
+    .checkitem .lbl{ font-size: 13px; font-weight: 800; color: var(--text); }
+
+    /* Buttons */
+    .btnrow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px; }
+    .btn{
+      flex: 1 1 auto;
+      min-width: 130px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing:.5px;
+      text-transform: uppercase;
+      transition: background .15s, border-color .15s, transform .05s;
+    }
+    .btn:hover{ background: rgba(255,255,255,.06); border-color: rgba(77,163,255,.45); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{ background: rgba(77,163,255,.18); border-color: rgba(77,163,255,.55); }
+    .btn.primary:hover{ background: rgba(77,163,255,.28); }
+
+    .save-toast{ display:none; margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(36,209,138,.10); border:1px solid rgba(36,209,138,.45); color: var(--text); font-size: 12px; font-weight: 800; }
+    .save-toast.show{ display:block; }
+
+    /* Log table */
+    .log-toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom: 12px; }
+    .log-toolbar select{
+      padding: 9px 12px;
+      border-radius: 10px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      outline: none;
+      cursor:pointer;
+    }
+    .log-toolbar select:focus{ border-color: rgba(77,163,255,.55); }
+    .log-toolbar .spacer{ flex: 1 1 auto; }
+
+    .log-tablewrap{ overflow-x:auto; -webkit-overflow-scrolling: touch; border:1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,.02); }
+    table.log{ width:100%; border-collapse: collapse; min-width: 560px; }
+    table.log th, table.log td{
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      border-bottom: 1px solid var(--stroke);
+      white-space: nowrap;
+    }
+    table.log th{ color: var(--muted); font-size: 11px; letter-spacing:.4px; text-transform: uppercase; font-weight: 900; background: rgba(255,255,255,.025); }
+    table.log tr:last-child td{ border-bottom: none; }
+    .badge{ display:inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing:.3px; }
+    .badge.ok{ color: var(--ok); background: rgba(36,209,138,.12); border:1px solid rgba(36,209,138,.45); }
+    .badge.warn{ color: var(--warn); background: rgba(247,201,72,.12); border:1px solid rgba(247,201,72,.45); }
+    .badge.bad{ color: var(--bad); background: rgba(255,77,77,.12); border:1px solid rgba(255,77,77,.45); }
+    .badge.info{ color: #8ab9ff; background: rgba(77,163,255,.10); border:1px solid rgba(77,163,255,.40); }
+
+    .log-empty-hint{ margin-top: 10px; font-size: 11px; color: var(--muted); font-style: italic; text-align:center; }
+
+    /* Device grid */
+    .device-grid{
+      display:grid; gap: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px){ .device-grid{ grid-template-columns: 1fr 1fr; } }
+    .device-row{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 11px 14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.025);
+      border-radius: 10px;
+      min-height: 48px;
+    }
+    .device-row .k{ color: var(--muted); font-size: 11px; letter-spacing:.4px; text-transform: uppercase; font-weight: 900; }
+    .device-row .v{ color: var(--text); font-size: 13px; font-weight: 850; text-align:right; word-break: break-all; }
   </style>
 </head>
 
@@ -196,6 +357,17 @@
           <button id="btn1h">1h</button>
         </div>
       </header>
+
+      <!-- PHASE 3: TAB NAVIGATION -->
+      <nav class="tabnav" role="tablist" aria-label="Dashboard sections">
+        <button class="tab-btn active" data-tab="monitor" role="tab" aria-selected="true">Monitor</button>
+        <button class="tab-btn" data-tab="alert"   role="tab" aria-selected="false">Alert</button>
+        <button class="tab-btn" data-tab="log"     role="tab" aria-selected="false">Log</button>
+        <button class="tab-btn" data-tab="device"  role="tab" aria-selected="false">Device</button>
+      </nav>
+
+      <!-- ===================== TAB: MONITOR (existing realtime UI) ===================== -->
+      <section id="tab-monitor" class="tab-content active" role="tabpanel" aria-labelledby="monitor">
 
       <div class="grid kpi-grid">
         <div id="cardV" class="card">
@@ -265,12 +437,175 @@
         Source: MQTT over WebSocket (EMQX) • Topics:
         <b id="topicDataLabel">-</b> + <b id="topicStatusLabel">-</b>
       </div>
+
+      </section>
+      <!-- ===================== /TAB: MONITOR ===================== -->
+
+
+      <!-- ===================== TAB: ALERT ===================== -->
+      <section id="tab-alert" class="tab-content" role="tabpanel" aria-labelledby="alert">
+        <div class="card" style="margin-bottom:12px;">
+          <div class="panel-title"><span class="dot"></span> WhatsApp Alert Settings</div>
+
+          <div class="toggle">
+            <span class="label">Enable Alert</span>
+            <label class="switch">
+              <input type="checkbox" id="alertEnable">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="waNum1">WA Number 1</label>
+              <input type="tel" id="waNum1" placeholder="628xxxxxxxxxx" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="waNum2">WA Number 2</label>
+              <input type="tel" id="waNum2" placeholder="628xxxxxxxxxx" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="waNum3">WA Number 3</label>
+              <input type="tel" id="waNum3" placeholder="628xxxxxxxxxx" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="alertCooldown">Cooldown Alert (minutes)</label>
+              <input type="number" id="alertCooldown" min="1" max="1440" step="1" placeholder="15">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:12px;">
+          <div class="panel-title"><span class="dot"></span> Alert Rules</div>
+          <div class="checkgrid">
+            <label class="checkitem"><input type="checkbox" data-rule="device_offline"><span class="lbl">Device Offline</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="pzem_off"><span class="lbl">PZEM OFF</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="voltage_low"><span class="lbl">Voltage Low</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="voltage_high"><span class="lbl">Voltage High</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="sim_fail"><span class="lbl">SIM Fail</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="device_reboot"><span class="lbl">Device Reboot</span></label>
+            <label class="checkitem"><input type="checkbox" data-rule="weak_signal"><span class="lbl">Weak Signal</span></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="btnrow">
+            <button class="btn primary" id="btnAlertSave">Save Settings</button>
+            <button class="btn" id="btnAlertTest">Test Message</button>
+          </div>
+          <div id="alertToast" class="save-toast">Settings saved (local only).</div>
+          <div class="small-muted" style="margin-top:10px; font-size:11px;">
+            Note: backend WhatsApp belum aktif; pengaturan ini disimpan di browser (localStorage).
+          </div>
+        </div>
+      </section>
+      <!-- ===================== /TAB: ALERT ===================== -->
+
+
+      <!-- ===================== TAB: LOG ===================== -->
+      <section id="tab-log" class="tab-content" role="tabpanel" aria-labelledby="log">
+        <div class="card">
+          <div class="panel-title"><span class="dot"></span> Log History</div>
+
+          <div class="log-toolbar">
+            <select id="logFilterEvent" aria-label="Filter event">
+              <option value="">All Events</option>
+              <option value="DEVICE">Device</option>
+              <option value="PZEM">PZEM</option>
+              <option value="VOLT">Voltage</option>
+              <option value="NET">Network</option>
+              <option value="SIM">SIM</option>
+            </select>
+            <select id="logFilterStatus" aria-label="Filter status">
+              <option value="">All Status</option>
+              <option value="OK">OK</option>
+              <option value="WARN">Warning</option>
+              <option value="BAD">Critical</option>
+              <option value="INFO">Info</option>
+            </select>
+            <select id="logFilterRange" aria-label="Filter range">
+              <option value="24h">Last 24h</option>
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+            </select>
+            <span class="spacer"></span>
+            <button class="btn" id="btnExportCsv">Export CSV</button>
+            <button class="btn" id="btnExportXls">Export Excel</button>
+          </div>
+
+          <div class="log-tablewrap">
+            <table class="log" id="logTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Event</th>
+                  <th>Value</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="logTbody">
+                <!-- dummy rows; nanti diganti backend -->
+                <tr><td>2026-05-09 14:02:11</td><td>DEVICE</td><td>ONLINE</td><td><span class="badge ok">OK</span></td></tr>
+                <tr><td>2026-05-09 13:58:45</td><td>NET</td><td>RSSI 18</td><td><span class="badge ok">OK</span></td></tr>
+                <tr><td>2026-05-09 13:42:10</td><td>VOLT</td><td>208.4 V</td><td><span class="badge warn">Warning</span></td></tr>
+                <tr><td>2026-05-09 13:30:01</td><td>PZEM</td><td>OFF</td><td><span class="badge warn">Warning</span></td></tr>
+                <tr><td>2026-05-09 12:15:33</td><td>SIM</td><td>SIM_FAIL</td><td><span class="badge bad">Critical</span></td></tr>
+                <tr><td>2026-05-09 12:14:50</td><td>NET</td><td>Switch to WiFi</td><td><span class="badge info">Info</span></td></tr>
+                <tr><td>2026-05-09 09:00:00</td><td>DEVICE</td><td>Reboot</td><td><span class="badge info">Info</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="log-empty-hint">Showing dummy sample rows. Backend Google Sheets / DB belum aktif.</div>
+        </div>
+      </section>
+      <!-- ===================== /TAB: LOG ===================== -->
+
+
+      <!-- ===================== TAB: DEVICE ===================== -->
+      <section id="tab-device" class="tab-content" role="tabpanel" aria-labelledby="device">
+        <div class="card">
+          <div class="panel-title"><span class="dot"></span> Device Information</div>
+
+          <div class="device-grid">
+            <div class="device-row"><span class="k">Firmware Version</span><span class="v" id="dev_fw">v10</span></div>
+            <div class="device-row"><span class="k">Build Tag</span><span class="v" id="dev_build">PLAIN_FINAL_v10_PRODUCTION_HARDEN</span></div>
+            <div class="device-row"><span class="k">Network Mode</span><span class="v" id="dev_netmode">HYBRID</span></div>
+            <div class="device-row"><span class="k">Active Network</span><span class="v" id="dev_active">--</span></div>
+            <div class="device-row"><span class="k">MQTT Topic (Data)</span><span class="v" id="dev_topic_data">-</span></div>
+            <div class="device-row"><span class="k">MQTT Topic (Status)</span><span class="v" id="dev_topic_status">-</span></div>
+            <div class="device-row"><span class="k">MQTT Broker</span><span class="v" id="dev_broker">broker.emqx.io:8084</span></div>
+            <div class="device-row"><span class="k">Heap Memory</span><span class="v" id="dev_heap">~150 KB free</span></div>
+            <div class="device-row"><span class="k">Uptime</span><span class="v" id="dev_uptime">--</span></div>
+            <div class="device-row"><span class="k">Last Reboot</span><span class="v" id="dev_lastreboot">--</span></div>
+            <div class="device-row"><span class="k">Device ID</span><span class="v" id="dev_id">MULEVIAN_xxxxxxxx</span></div>
+            <div class="device-row"><span class="k">Dashboard Loaded</span><span class="v" id="dev_loaded">--</span></div>
+            <div class="device-row"><span class="k">Cloud Logger</span><span class="v" id="dev_cloud_status">INIT</span></div>
+            <div class="device-row"><span class="k">Rows Sent</span><span class="v" id="dev_cloud_count">0</span></div>
+            <div class="device-row"><span class="k">Last Sync</span><span class="v" id="dev_cloud_lastsync">--</span></div>
+          </div>
+
+          <div class="small-muted" style="margin-top:14px; font-size:11px;">
+            Catatan: sebagian field masih dummy/static. Akan dihubungkan ke MQTT status payload pada fase berikutnya.
+          </div>
+        </div>
+      </section>
+      <!-- ===================== /TAB: DEVICE ===================== -->
+
     </div>
   </div>
 
 <script>
   // ===================== SETTINGS =====================
   const WS_URL = "wss://broker.emqx.io:8084/mqtt";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMP02YVuUgY2lA3MxtUP0npPIiARkLQMw_nDal5KNBZ5cL0rZz8pVo53KLX4GupLJh/exec";
+  const CLOUD_PUSH_INTERVAL_MS = 30000;
+  const CLOUD_PUSH_MIN_GAP_MS  = 25000;
+  const DEVICE_ID              = "FTM001";
 
   // Firmware default topics
   const DEFAULT_TOPIC_DATA   = "FADHIL/FATHOM/DATA";
@@ -575,6 +910,13 @@
   setLoadingText("Loading cached...");
   applyCached();
 
+  // ===================== CLOUD LOGGER CACHE =====================
+  let latestTelemetry = null;
+  let lastCloudSend   = 0;
+  let cloudSendCount  = 0;
+  let cloudLastStatus = "INIT";   // INIT | OK | ERROR
+  let cloudLastError  = "";
+
   // ===================== MQTT =====================
   setLoadingText("Connecting broker...");
   const client = mqtt.connect(WS_URL);
@@ -627,6 +969,25 @@
         setText("PF", (d.PF ?? 0).toFixed(2));
         setVoltageAlarm(d.V);
 
+        // ---- CLOUD LOGGER: cache telemetry terbaru (dipakai setInterval 30s) ----
+        try {
+          const rssiTxt = document.getElementById("rssiText")?.innerText || "0";
+          const rssiNum = parseInt(rssiTxt, 10);
+          latestTelemetry = {
+            device_id: DEVICE_ID,
+            voltage: d.V ?? 0,
+            current: d.A ?? 0,
+            power:   d.W ?? 0,
+            kwh:     d.kWh ?? 0,
+            freq:    d.Hz ?? 0,
+            pf:      d.PF ?? 0,
+            rssi:    isNaN(rssiNum) ? 0 : rssiNum,
+            network: (document.getElementById("dev_active")?.innerText
+                   || document.getElementById("networkText")?.innerText
+                   || "UNKNOWN")
+          };
+        } catch(_){ /* never block MQTT path */ }
+
         // kalau belum dapat DEVICE status, minimal tandai ONLINE
         const txt = document.getElementById("deviceText");
         if (txt && txt.innerText.includes("CONNECTING")) setDeviceState("ONLINE");
@@ -645,6 +1006,270 @@
   client.on("reconnect", () => setLoadingText("Reconnecting broker..."));
   client.on("close", () => setLoadingText("Connection closed"));
   client.on("error", () => setLoadingText("MQTT error"));
+
+  /* ===================== PHASE 3: TAB SWITCHING ===================== */
+  (function initTabs(){
+    const tabs = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".tab-content");
+    function activate(name){
+      tabs.forEach(b => {
+        const on = b.dataset.tab === name;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panels.forEach(p => {
+        p.classList.toggle("active", p.id === ("tab-" + name));
+      });
+      try { localStorage.setItem("sem_active_tab", name); } catch(_) {}
+      // hash sync (deep link)
+      if (history.replaceState) history.replaceState(null, "", "#" + name);
+    }
+    tabs.forEach(b => b.addEventListener("click", () => activate(b.dataset.tab)));
+
+    // restore last tab (or from hash). default = monitor.
+    const hash = (location.hash || "").replace("#","").trim();
+    const saved = localStorage.getItem("sem_active_tab");
+    const initial = ["monitor","alert","log","device"].includes(hash) ? hash
+                  : ["monitor","alert","log","device"].includes(saved) ? saved
+                  : "monitor";
+    activate(initial);
+  })();
+
+  /* ===================== PHASE 3: ALERT SETTINGS (localStorage) ===================== */
+  (function initAlertSettings(){
+    const LS_KEY = "sem_alert_settings_v1";
+    const enableEl   = document.getElementById("alertEnable");
+    const num1El     = document.getElementById("waNum1");
+    const num2El     = document.getElementById("waNum2");
+    const num3El     = document.getElementById("waNum3");
+    const cooldownEl = document.getElementById("alertCooldown");
+    const ruleEls    = document.querySelectorAll('[data-rule]');
+    const btnSave    = document.getElementById("btnAlertSave");
+    const btnTest    = document.getElementById("btnAlertTest");
+    const toast      = document.getElementById("alertToast");
+
+    function defaults(){
+      return {
+        enable: false,
+        wa: ["", "", ""],
+        cooldown: 15,
+        rules: {
+          device_offline: true,
+          pzem_off: true,
+          voltage_low: true,
+          voltage_high: true,
+          sim_fail: true,
+          device_reboot: false,
+          weak_signal: false
+        }
+      };
+    }
+
+    function load(){
+      let cfg = defaults();
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          cfg = Object.assign(cfg, parsed);
+          cfg.wa = Array.isArray(parsed.wa) ? parsed.wa.slice(0,3) : cfg.wa;
+          while (cfg.wa.length < 3) cfg.wa.push("");
+          cfg.rules = Object.assign(defaults().rules, parsed.rules || {});
+        }
+      } catch(_){ /* ignore */ }
+
+      enableEl.checked   = !!cfg.enable;
+      num1El.value       = cfg.wa[0] || "";
+      num2El.value       = cfg.wa[1] || "";
+      num3El.value       = cfg.wa[2] || "";
+      cooldownEl.value   = cfg.cooldown || 15;
+      ruleEls.forEach(el => {
+        const k = el.dataset.rule;
+        el.checked = !!cfg.rules[k];
+      });
+    }
+
+    function save(){
+      const rules = {};
+      ruleEls.forEach(el => { rules[el.dataset.rule] = !!el.checked; });
+      const cfg = {
+        enable: !!enableEl.checked,
+        wa: [num1El.value.trim(), num2El.value.trim(), num3El.value.trim()],
+        cooldown: parseInt(cooldownEl.value, 10) || 15,
+        rules: rules
+      };
+      try { localStorage.setItem(LS_KEY, JSON.stringify(cfg)); } catch(_){}
+      toast.textContent = "Settings saved (local only).";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function test(){
+      const cfg = (function(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch(_){ return {}; } })();
+      const list = (cfg.wa || []).filter(Boolean);
+      if (!list.length) {
+        toast.textContent = "Test: no WA number configured.";
+      } else if (cfg.enable === false) {
+        toast.textContent = "Test queued (alerts disabled). Numbers: " + list.join(", ");
+      } else {
+        toast.textContent = "Test message dispatched (UI mock) to: " + list.join(", ");
+      }
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    btnSave.addEventListener("click", save);
+    btnTest.addEventListener("click", test);
+    load();
+  })();
+
+  /* ===================== PHASE 3: LOG FILTERS + EXPORT STUB ===================== */
+  (function initLog(){
+    const evSel  = document.getElementById("logFilterEvent");
+    const stSel  = document.getElementById("logFilterStatus");
+    const tbody  = document.getElementById("logTbody");
+    const btnCsv = document.getElementById("btnExportCsv");
+    const btnXls = document.getElementById("btnExportXls");
+
+    function applyFilter(){
+      const ev = (evSel.value || "").toUpperCase();
+      const st = (stSel.value || "").toUpperCase();
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(tr => {
+        const evCell = (tr.children[1]?.textContent || "").toUpperCase();
+        const stCell = (tr.children[3]?.textContent || "").toUpperCase();
+        let show = true;
+        if (ev && !evCell.includes(ev)) show = false;
+        if (st) {
+          if (st === "OK"   && !stCell.includes("OK")) show = false;
+          if (st === "WARN" && !stCell.includes("WARN")) show = false;
+          if (st === "BAD"  && !stCell.includes("CRITICAL")) show = false;
+          if (st === "INFO" && !stCell.includes("INFO")) show = false;
+        }
+        tr.style.display = show ? "" : "none";
+      });
+    }
+    evSel.addEventListener("change", applyFilter);
+    stSel.addEventListener("change", applyFilter);
+
+    function exportStub(kind){
+      // UI stub only. Real export menyusul saat backend log siap.
+      alert("Export " + kind + " belum aktif.\n\nFitur ini akan dihubungkan ke backend log pada fase berikutnya.");
+    }
+    btnCsv.addEventListener("click", () => exportStub("CSV"));
+    btnXls.addEventListener("click", () => exportStub("Excel"));
+  })();
+
+  /* ===================== PHASE 3: DEVICE INFO PANEL ===================== */
+  (function initDeviceInfo(){
+    // Static / dummy fields. MQTT topics diambil dari konstanta existing.
+    const setDev = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    setDev("dev_topic_data",   TOPIC_DATA);
+    setDev("dev_topic_status", TOPIC_STATUS);
+
+    // Device ID dummy (stable per-browser)
+    let did = localStorage.getItem("sem_dev_id_view");
+    if (!did) {
+      did = "MULEVIAN_" + Math.random().toString(16).slice(2, 10).toUpperCase();
+      try { localStorage.setItem("sem_dev_id_view", did); } catch(_){}
+    }
+    setDev("dev_id", did);
+
+    const loadedAt = new Date();
+    setDev("dev_loaded", loadedAt.toLocaleString("id-ID", { hour12: false }));
+    setDev("dev_lastreboot", loadedAt.toLocaleString("id-ID", { hour12: false }) + " (dashboard load)");
+
+    // Mirror uptime live dari pill existing
+    const upPill = document.getElementById("uptimeText");
+    const devUp  = document.getElementById("dev_uptime");
+    if (upPill && devUp) {
+      const sync = () => { devUp.textContent = upPill.innerText || "--"; };
+      sync();
+      // Observer ringan: cek setiap 5 detik (bukan MutationObserver biar zero-risk vs MQTT existing)
+      setInterval(sync, 5000);
+    }
+
+    // Active network indikator dummy: tampilkan LED device existing
+    const devActiveEl = document.getElementById("dev_active");
+    function syncActive(){
+      const txt = (document.getElementById("deviceText")?.innerText || "").replace("DEVICE: ", "");
+      devActiveEl.textContent = txt || "--";
+    }
+    syncActive();
+    setInterval(syncActive, 5000);
+  })();
+
+  /* ===================== PHASE 4: GOOGLE SHEETS CLOUD LOGGER ===================== */
+  (function initCloudLogger(){
+    const statusEl  = document.getElementById("dev_cloud_status");
+    const countEl   = document.getElementById("dev_cloud_count");
+    const syncEl    = document.getElementById("dev_cloud_lastsync");
+
+    function refreshUI(){
+      if (statusEl) statusEl.textContent = cloudLastStatus + (cloudLastError ? " (" + cloudLastError + ")" : "");
+      if (countEl)  countEl.textContent  = String(cloudSendCount);
+      if (syncEl)   syncEl.textContent   = lastCloudSend
+        ? new Date(lastCloudSend).toLocaleTimeString("id-ID", { hour12: false })
+        : "--";
+    }
+    refreshUI();
+
+    async function pushOnce(){
+      if (!latestTelemetry) return;
+      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("script.google.com") < 0) return;
+
+      const now = Date.now();
+      if (lastCloudSend && (now - lastCloudSend) < CLOUD_PUSH_MIN_GAP_MS) return; // anti spam
+
+      // snapshot supaya tidak race dengan MQTT incoming saat fetch in-flight
+      const payload = Object.assign({}, latestTelemetry, {
+        ts_client: new Date().toISOString()
+      });
+
+      try {
+        // text/plain dipakai untuk menghindari CORS preflight ke Apps Script
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "cors",
+          redirect: "follow",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        let bodyText = "";
+        try { bodyText = await response.text(); } catch(_) { bodyText = "(no body)"; }
+
+        if (!response.ok) {
+          cloudLastStatus = "ERROR";
+          cloudLastError  = "HTTP " + response.status;
+          console.error("GOOGLE LOGGER HTTP:", response.status, bodyText);
+        } else {
+          cloudLastStatus = "OK";
+          cloudLastError  = "";
+          lastCloudSend   = now;
+          cloudSendCount++;
+          console.log("GOOGLE LOGGER:", bodyText);
+        }
+      } catch (err) {
+        cloudLastStatus = "ERROR";
+        cloudLastError  = (err && err.message) ? err.message.slice(0, 40) : "network";
+        console.error("GOOGLE LOGGER ERROR:", err);
+      } finally {
+        refreshUI();
+      }
+    }
+
+    // Push periodik 30 detik
+    setInterval(pushOnce, CLOUD_PUSH_INTERVAL_MS);
+
+    // Hentikan/lanjutkan saat tab background → tidak wajib, tapi mencegah retry tak perlu
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && latestTelemetry) {
+        // saat tab kembali aktif, refresh status UI biar nilai countnya akurat
+        refreshUI();
+      }
+    });
+  })();
 </script>
 </body>
 </html>
